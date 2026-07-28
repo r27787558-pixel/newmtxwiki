@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Header from './components/Header';
-import Home from './pages/Home';
-import Meds from './pages/Meds';
-import HrtOverview from './pages/HrtOverview';
-import Surgery from './pages/Surgery';
-import Survey from './pages/Survey';
-import Guide from './pages/Guide';
-import Help from './pages/Help';
+import Header from './components/Header.jsx';
+import Home from './pages/Home.jsx';
+import Meds from './pages/Meds.jsx';
+import HrtOverview from './pages/HrtOverview.jsx';
+import Surgery from './pages/Surgery.jsx';
+import Survey from './pages/Survey.jsx';
+import Guide from './pages/Guide.jsx';
+import Help from './pages/Help.jsx';
 import './style.css';
 
 export default function App() {
@@ -34,10 +34,11 @@ export default function App() {
   };
 
   return (
-    <div className="app-container">
+    <div>
       <Header currentPath={currentPath} setCurrentPath={setCurrentPath} />
-      <main>{renderPage()}</main>
+      <main>
+        {renderPage()}
+      </main>
     </div>
   );
 }
-
