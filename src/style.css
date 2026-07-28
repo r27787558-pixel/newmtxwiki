@@ -25,6 +25,82 @@
   transition: background-color 0.2s, color 0.2s;
 }
 
+.subtitle {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+}
+
+.sub-nav-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sub-nav-btn {
+  background-color: #334155;
+  color: #cbd5e1;
+  border: 1px solid #475569;
+  padding: 0.4rem 0.85rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sub-nav-btn:hover {
+  background-color: #475569;
+  color: #ffffff;
+}
+
+.sub-nav-btn.active {
+  background-color: #e2e8f0;
+  color: #0f172a;
+  border-color: #e2e8f0;
+  font-weight: 600;
+}
+
+.sub-content {
+  margin-top: 1rem;
+}
+
+.med-effect-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background-color: #0f172a;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.med-effect-table th,
+.med-effect-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #334155;
+}
+
+.med-effect-table th {
+  background-color: #1e293b;
+  color: #2dd4bf;
+}
+
+.info-quote {
+  background-color: #0f172a;
+  border-left: 4px solid #2dd4bf;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #334155;
+  margin: 1.5rem 0;
+}
+
+
 .dropdown-menu a:hover,
 .dropdown-menu a.sub-active {
   background-color: #334155;
