@@ -112,3 +112,27 @@ tr:hover {
   font-weight: bold;
   margin-bottom: 20px;
 }
+.card-with-border {
+  position: relative;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid #e9d5ff;
+}
+
+.card-with-border::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    #7e22ce,
+    #7e22ce 10px,
+    #facc15 10px,
+    #facc15 20px
+  );
+  border-radius: 6px 6px 0 0;
+}
