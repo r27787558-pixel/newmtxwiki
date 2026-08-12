@@ -41,6 +41,12 @@ body {
   flex-direction: column;
 }
 
+.site-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 main {
   flex: 1;
   width: 100%;
@@ -324,21 +330,45 @@ hr {
   margin: 2rem 0;
 }
 
-/* ===== Typography ===== 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--primary-purple);
-  margin-top: 0;
+/* ===== Footer ===== */
+.site-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  padding: 1rem 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  box-shadow: 0 -2px 4px rgba(126, 34, 206, 0.03);
 }
 
-a {
-  color: var(--primary-purple);
-  text-decoration: none;
+.footer-disclaimer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  color: var(--text-main);
+  font-weight: 500;
 }
 
-a:hover {
-  text-decoration: underline;
+.footer-disclaimer strong {
+  color: var(--primary-purple);
 }
-*/
+
+.footer-meta {
+  margin-top: 0.4rem;
+  margin-bottom: 0;
+}
+
+.footer-link {
+  margin-left: 0.4rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.footer-link:hover {
+  color: var(--primary-purple-hover);
+}
 
 /* ===== Header Navigation ===== */
 .header-nav {

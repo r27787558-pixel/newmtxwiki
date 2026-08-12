@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Header from './components/Header.jsx';
+import Footer from './components/Footer.jsx';
+import Disclaimer from './pages/Disclaimer.jsx';
 import Home from './pages/Home.jsx';
 import Meds from './pages/Meds.jsx';
 import HrtOverview from './pages/HrtOverview.jsx';
@@ -28,17 +30,20 @@ export default function App() {
         return <Guide />;
       case 'help':
         return <Help />;
+      case 'disclaimer':
+        return <Disclaimer />;
       default:
         return <Home setCurrentPath={setCurrentPath} />;
     }
   };
 
   return (
-    <div>
+    <div className="site-wrapper">
       <Header currentPath={currentPath} setCurrentPath={setCurrentPath} />
       <main>
         {renderPage()}
       </main>
+      <Footer setCurrentPath={setCurrentPath} />
     </div>
   );
 }

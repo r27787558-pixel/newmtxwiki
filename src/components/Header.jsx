@@ -115,6 +115,17 @@ export default function Header({ currentPath, setCurrentPath }) {
         >
           救助
         </a>
+
+        <a
+          href="#disclaimer"
+          className={currentPath === 'disclaimer' ? 'active' : ''}
+          onClick={(e) => {
+            e.preventDefault();
+            setCurrentPath('disclaimer');
+          }}
+        >
+          医学声明
+        </a>
       </nav>
     </header>
   );
