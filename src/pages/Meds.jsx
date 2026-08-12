@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import HrtOverview from './HrtOverview';
 import { useLanguage } from '../context/LanguageContext.jsx';
 
 const TABS = (zh) =>
   (zh
     ? [
-        { id: 'overview', label: 'HRT综述' },
         { id: 'monitoring', label: '用药期间的监测' },
         { id: 'risks', label: '用药风险' },
         { id: 'estrogens', label: '雌激素类药物' },
@@ -13,7 +11,6 @@ const TABS = (zh) =>
         { id: 'serms', label: '选择性雌激素受体调节剂' },
       ]
     : [
-        { id: 'overview', label: 'HRT Overview' },
         { id: 'monitoring', label: 'Monitoring' },
         { id: 'risks', label: 'Risks' },
         { id: 'estrogens', label: 'Estrogens' },
@@ -41,7 +38,7 @@ const PLACEHOLDERS = (zh) =>
 export default function Meds() {
   const { lang } = useLanguage();
   const zh = lang === 'zh';
-  const [subTab, setSubTab] = useState('overview');
+  const [subTab, setSubTab] = useState('monitoring');
   const tabs = TABS(zh);
   const placeholders = PLACEHOLDERS(zh);
 
@@ -52,6 +49,10 @@ export default function Meds() {
         {zh
           ? '这里未来将用于编写和整理适合各个 MtX 群体的 HRT（激素替代治疗）科普指南。'
           : 'This section will compile HRT (hormone replacement therapy) educational guides tailored to the MtX community.'}
+      </p>
+      <p className="content">
+        {zh ? 'HRT 的完整综述请见 ' : 'For a full HRT overview, see '}
+        <a href="#/hrt-overview">{zh ? 'HRT 指南' : 'the HRT Guide'}</a>。
       </p>
 
       <div className="sub-nav-bar">
@@ -68,14 +69,11 @@ export default function Meds() {
       </div>
 
       <div className="sub-content">
-        {subTab === 'overview' && <HrtOverview />}
-        {subTab !== 'overview' && (
-          <div className="section placeholder">
-            <p>
-              （{placeholders[subTab]} {zh ? '期待你的加入...' : 'Your contribution is welcome...'}）
-            </p>
-          </div>
-        )}
+        <div className="section placeholder">
+          <p>
+            （{placeholders[subTab]} {zh ? '期待你的加入...' : 'Your contribution is welcome...'}）
+          </p>
+        </div>
       </div>
     </div>
   );

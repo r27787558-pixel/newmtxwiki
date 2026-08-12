@@ -15,7 +15,6 @@ export default function Header({ currentPath, setCurrentPath }) {
   };
 
   const links = [
-    { path: 'index', label: t.navHome },
     { path: 'surgery', label: t.navSurgery },
     { path: 'survey', label: t.navSurvey },
     { path: 'guide', label: t.navGuide },
