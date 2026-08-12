@@ -1,22 +1,24 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext.jsx';
 
-const NAV_GROUPS = [
+const NAV_GROUPS = (t) => [
   {
-    label: '导航',
+    label: t.sidebarNavGroup,
     links: [
-      { path: 'index', label: '首页' },
-      { path: 'hrt-overview', label: 'HRT 指南' },
-      { path: 'meds', label: '药物' },
-      { path: 'surgery', label: '手术' },
+      { path: 'index', label: t.navHome },
+      { path: 'hrt-overview', label: t.sidebarHrt },
+      { path: 'meds', label: t.medsLabel },
+      { path: 'surgery', label: t.navSurgery },
     ],
   },
   {
-    label: '资源',
+    label: t.sidebarResourceGroup,
     links: [
-      { path: 'survey', label: '调查问卷' },
-      { path: 'guide', label: '生活指南' },
-      { path: 'help', label: '紧急救助' },
-      { path: 'disclaimer', label: '医学声明' },
+      { path: 'survey', label: t.sidebarSurvey },
+      { path: 'guide', label: t.navGuide },
+      { path: 'help', label: t.navHelp },
+      { path: 'disclaimer', label: t.sidebarDisclaimer },
+      { path: 'contact', label: t.navContact },
     ],
   },
 ];
@@ -28,17 +30,19 @@ function isActive(path, currentPath) {
 }
 
 export default function Sidebar({ currentPath, setCurrentPath }) {
+  const { t } = useLanguage();
+
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
         <span className="sidebar-logo-mark">M</span>
         <div className="sidebar-logo-text">
-          <strong>MtX.wiki</strong>
-          <small>知识库</small>
+          <strong>{t.brand}</strong>
+          <small>{t.tagline}</small>
         </div>
       </div>
-      <nav className="sidebar-nav" aria-label="站点导航">
-        {NAV_GROUPS.map((group) => (
+      <nav className="sidebar-nav" aria-label="site">
+        {NAV_GROUPS(t).map((group) => (
           <div className="sidebar-group" key={group.label}>
             <div className="sidebar-group-title">{group.label}</div>
             <ul className="sidebar-list">
@@ -66,7 +70,7 @@ export default function Sidebar({ currentPath, setCurrentPath }) {
           target="_blank"
           rel="noreferrer"
         >
-          在 GitHub 上贡献
+          {t.sidebarContribute}
         </a>
       </div>
     </aside>

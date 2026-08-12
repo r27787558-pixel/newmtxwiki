@@ -10,25 +10,43 @@ import Surgery from './pages/Surgery.jsx';
 import Survey from './pages/Survey.jsx';
 import Guide from './pages/Guide.jsx';
 import Help from './pages/Help.jsx';
+import Contact from './pages/Contact.jsx';
+import { useLanguage } from './context/LanguageContext.jsx';
 import './style.css';
 
 const TITLES = {
-  index: '首页 · MtX.wiki',
-  meds: '药物 · MtX.wiki',
-  'hrt-overview': 'HRT 指南（综述） · MtX.wiki',
-  surgery: '手术 · MtX.wiki',
-  survey: '调查问卷 · MtX.wiki',
-  guide: '生活指南 · MtX.wiki',
-  help: '救助资源 · MtX.wiki',
-  disclaimer: '医学免责声明 · MtX.wiki',
+  zh: {
+    index: '首页 · MtX.wiki',
+    meds: '药物 · MtX.wiki',
+    'hrt-overview': 'HRT 指南（综述） · MtX.wiki',
+    surgery: '手术 · MtX.wiki',
+    survey: '调查问卷 · MtX.wiki',
+    guide: '生活指南 · MtX.wiki',
+    help: '救助资源 · MtX.wiki',
+    disclaimer: '医学免责声明 · MtX.wiki',
+    contact: '联系 · MtX.wiki',
+  },
+  en: {
+    index: 'Home · MtX.wiki',
+    meds: 'Medications · MtX.wiki',
+    'hrt-overview': 'HRT Guide (Overview) · MtX.wiki',
+    surgery: 'Surgery · MtX.wiki',
+    survey: 'Survey · MtX.wiki',
+    guide: 'Life Guide · MtX.wiki',
+    help: 'Help Resources · MtX.wiki',
+    disclaimer: 'Medical Disclaimer · MtX.wiki',
+    contact: 'Contact · MtX.wiki',
+  },
 };
 
 function getPathFromHash() {
+  if (typeof window === 'undefined') return 'index';
   const hash = window.location.hash.replace(/^#\/?/, '');
   return hash || 'index';
 }
 
 export default function App() {
+  const { lang } = useLanguage();
   const [currentPath, setCurrentPathState] = useState(getPathFromHash);
 
   useEffect(() => {
@@ -49,8 +67,9 @@ export default function App() {
   };
 
   useEffect(() => {
-    document.title = TITLES[currentPath] || TITLES.index;
-  }, [currentPath]);
+    const titles = TITLES[lang] || TITLES.zh;
+    document.title = titles[currentPath] || titles.index;
+  }, [currentPath, lang]);
 
   const renderPage = () => {
     switch (currentPath) {
@@ -70,6 +89,8 @@ export default function App() {
         return <Help />;
       case 'disclaimer':
         return <Disclaimer />;
+      case 'contact':
+        return <Contact />;
       default:
         return <Home setCurrentPath={setCurrentPath} />;
     }

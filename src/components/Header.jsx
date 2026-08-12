@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext.jsx';
+import { useTheme } from '../context/ThemeContext.jsx';
 
 export default function Header({ currentPath, setCurrentPath }) {
+  const { t, toggleLang } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const [showMedsDropdown, setShowMedsDropdown] = useState(false);
 
   const isMedsActive = currentPath === 'meds' || currentPath === 'hrt-overview';
@@ -9,6 +13,16 @@ export default function Header({ currentPath, setCurrentPath }) {
     setCurrentPath(path);
     setShowMedsDropdown(false);
   };
+
+  const links = [
+    { path: 'index', label: t.navHome },
+    { path: 'surgery', label: t.navSurgery },
+    { path: 'survey', label: t.navSurvey },
+    { path: 'guide', label: t.navGuide },
+    { path: 'help', label: t.navHelp },
+    { path: 'disclaimer', label: t.navDisclaimer },
+    { path: 'contact', label: t.navContact },
+  ];
 
   return (
     <header className="header-nav">
@@ -20,7 +34,7 @@ export default function Header({ currentPath, setCurrentPath }) {
           navigate('index');
         }}
       >
-        MtX.wiki
+        {t.brand}
       </a>
       <nav className="nav-links">
         <a
@@ -31,7 +45,7 @@ export default function Header({ currentPath, setCurrentPath }) {
             navigate('index');
           }}
         >
-          首页
+          {t.navHome}
         </a>
 
         <div
@@ -47,12 +61,12 @@ export default function Header({ currentPath, setCurrentPath }) {
               navigate('meds');
             }}
           >
-            药物
+            {t.medsLabel}
           </a>
           <button
             type="button"
             className="dropdown-caret"
-            aria-label="展开药物子菜单"
+            aria-label={t.medsLabel}
             aria-haspopup="true"
             aria-expanded={showMedsDropdown}
             onClick={() => setShowMedsDropdown((v) => !v)}
@@ -69,7 +83,7 @@ export default function Header({ currentPath, setCurrentPath }) {
                   navigate('meds');
                 }}
               >
-                药物信息
+                {t.medsLabel}
               </a>
               <a
                 href="#/hrt-overview"
@@ -79,66 +93,40 @@ export default function Header({ currentPath, setCurrentPath }) {
                   navigate('hrt-overview');
                 }}
               >
-                HRT指南（综述）
+                {t.medsOverview}
               </a>
             </div>
           )}
         </div>
 
-        <a
-          href="#/surgery"
-          className={currentPath === 'surgery' ? 'active' : ''}
-          onClick={(e) => {
-            e.preventDefault();
-            navigate('surgery');
-          }}
-        >
-          手术
-        </a>
+        {links.map((link) => (
+          <a
+            key={link.path}
+            href={`#/${link.path}`}
+            className={currentPath === link.path ? 'active' : ''}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(link.path);
+            }}
+          >
+            {link.label}
+          </a>
+        ))}
 
-        <a
-          href="#/survey"
-          className={currentPath === 'survey' ? 'active' : ''}
-          onClick={(e) => {
-            e.preventDefault();
-            navigate('survey');
-          }}
-        >
-          调查
-        </a>
-
-        <a
-          href="#/guide"
-          className={currentPath === 'guide' ? 'active' : ''}
-          onClick={(e) => {
-            e.preventDefault();
-            navigate('guide');
-          }}
-        >
-          生活指南
-        </a>
-
-        <a
-          href="#/help"
-          className={currentPath === 'help' ? 'active' : ''}
-          onClick={(e) => {
-            e.preventDefault();
-            navigate('help');
-          }}
-        >
-          救助
-        </a>
-
-        <a
-          href="#/disclaimer"
-          className={currentPath === 'disclaimer' ? 'active' : ''}
-          onClick={(e) => {
-            e.preventDefault();
-            navigate('disclaimer');
-          }}
-        >
-          医学声明
-        </a>
+        <div className="header-actions">
+          <button
+            type="button"
+            className="header-icon-btn"
+            aria-label={theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight}
+            title={theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight}
+            onClick={toggleTheme}
+          >
+            {theme === 'light' ? '☾' : '☀'}
+          </button>
+          <button type="button" className="header-icon-btn lang-btn" onClick={toggleLang}>
+            {t.langSwitchToEn}
+          </button>
+        </div>
       </nav>
     </header>
   );

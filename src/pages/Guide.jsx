@@ -1,10 +1,18 @@
 import React from 'react';
 import WikiArticle from '../components/WikiArticle.jsx';
+import { useLanguage } from '../context/LanguageContext.jsx';
 
 export default function Guide() {
+  const { lang } = useLanguage();
+  const zh = lang === 'zh';
+
   return (
-    <WikiArticle title="生活指南">
-      <p>日常生活与社会支持相关指南页面建设中...</p>
+    <WikiArticle title={zh ? '生活指南' : 'Life Guide'}>
+      <p>
+        {zh
+          ? '日常生活与社会支持相关指南页面建设中...'
+          : 'Guides for everyday life and social support — page under construction...'}
+      </p>
     </WikiArticle>
   );
 }

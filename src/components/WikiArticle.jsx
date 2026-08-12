@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext.jsx';
 
 export default function WikiArticle({ title, lead, children }) {
+  const { t } = useLanguage();
   const contentRef = useRef(null);
   const [toc, setToc] = useState([]);
   const [activeId, setActiveId] = useState('');
@@ -47,8 +49,8 @@ export default function WikiArticle({ title, lead, children }) {
       <h1 className="wiki-page-title">{title}</h1>
       {lead && <p className="wiki-page-lead">{lead}</p>}
       {toc.length > 1 && (
-        <nav className="toc" aria-label="目录">
-          <div className="toc-title">目录</div>
+        <nav className="toc" aria-label={t.tocTitle}>
+          <div className="toc-title">{t.tocTitle}</div>
           <ul>
             {toc.map((item) => (
               <li key={item.id} className={`toc-level-${item.level}`}>

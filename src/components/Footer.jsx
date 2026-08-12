@@ -1,10 +1,15 @@
+import React from 'react';
+import { useLanguage } from '../context/LanguageContext.jsx';
+
 export default function Footer({ setCurrentPath }) {
+  const { t } = useLanguage();
+
   return (
     <footer className="site-footer">
       <div className="container">
         <p className="footer-disclaimer">
-          <strong>医学免责声明：</strong>
-          本站内容仅供参考，不构成医疗建议。任何用药或治疗决策请务必咨询合格的医生。
+          <strong>{t.footerDisclaimer}</strong>
+          {t.footerDisclaimerText}
           <a
             href="#/disclaimer"
             className="highlight"
@@ -13,11 +18,22 @@ export default function Footer({ setCurrentPath }) {
               setCurrentPath('disclaimer');
             }}
           >
-            阅读完整声明
+            {t.footerReadFull}
           </a>
         </p>
         <p className="footer-meta">
-          © {new Date().getFullYear()} MtX.wiki ·
+          © {new Date().getFullYear()} {t.brand} ·
+          <a
+            href="#/contact"
+            className="footer-link"
+            onClick={(e) => {
+              e.preventDefault();
+              setCurrentPath('contact');
+            }}
+          >
+            {t.navContact}
+          </a>
+          ·
           <a
             href="#/help"
             className="footer-link"
@@ -26,7 +42,7 @@ export default function Footer({ setCurrentPath }) {
               setCurrentPath('help');
             }}
           >
-            紧急救助
+            {t.footerEmergency}
           </a>
         </p>
       </div>
