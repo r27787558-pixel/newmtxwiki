@@ -21,6 +21,7 @@ export default function Header({ currentPath, setCurrentPath }) {
     { path: 'help', label: t.navHelp },
     { path: 'disclaimer', label: t.navDisclaimer },
     { path: 'contact', label: t.navContact },
+    { path: 'contributors', label: t.navContributors },
   ];
 
   return (

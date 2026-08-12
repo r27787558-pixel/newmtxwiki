@@ -19,6 +19,7 @@ const NAV_GROUPS = (t) => [
       { path: 'help', label: t.navHelp },
       { path: 'disclaimer', label: t.sidebarDisclaimer },
       { path: 'contact', label: t.navContact },
+      { path: 'contributors', label: t.navContributors },
     ],
   },
 ];

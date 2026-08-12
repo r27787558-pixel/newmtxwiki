@@ -10,6 +10,7 @@ const CARDS = (zh) =>
         { path: 'guide', title: '生活指南', desc: '日常生活与社会支持相关指南。', tag: '建设中' },
         { path: 'survey', title: '调查问卷', desc: '群体调查与数据收集。', tag: '建设中' },
         { path: 'help', title: '紧急救助', desc: '紧急救助与求助渠道。', tag: '建设中' },
+        { path: 'contributors', title: '贡献者', desc: '感谢每一位贡献者的支持与付出。', tag: '感谢' },
       ]
     : [
         { path: 'hrt-overview', title: 'HRT Guide', desc: 'A scientific overview of hormone replacement therapy for the MtX community.', tag: 'Live' },
@@ -18,6 +19,7 @@ const CARDS = (zh) =>
         { path: 'guide', title: 'Life Guide', desc: 'Guides for everyday life and social support.', tag: 'WIP' },
         { path: 'survey', title: 'Survey', desc: 'Community surveys and data collection.', tag: 'WIP' },
         { path: 'help', title: 'Emergency Help', desc: 'Emergency assistance and support channels.', tag: 'WIP' },
+        { path: 'contributors', title: 'Contributors', desc: 'Our thanks to every contributor for their support and effort.', tag: 'Thanks' },
       ]);
 
 export default function Home({ setCurrentPath }) {

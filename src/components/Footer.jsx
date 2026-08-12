@@ -22,7 +22,7 @@ export default function Footer({ setCurrentPath }) {
           </a>
         </p>
         <p className="footer-meta">
-          © {new Date().getFullYear()} {t.brand} ·
+          © {new Date().getFullYear()} {t.brand}           ·
           <a
             href="#/contact"
             className="footer-link"
@@ -32,6 +32,17 @@ export default function Footer({ setCurrentPath }) {
             }}
           >
             {t.navContact}
+          </a>
+          ·
+          <a
+            href="#/contributors"
+            className="footer-link"
+            onClick={(e) => {
+              e.preventDefault();
+              setCurrentPath('contributors');
+            }}
+          >
+            {t.navContributors}
           </a>
           ·
           <a

@@ -11,6 +11,7 @@ import Survey from './pages/Survey.jsx';
 import Guide from './pages/Guide.jsx';
 import Help from './pages/Help.jsx';
 import Contact from './pages/Contact.jsx';
+import Contributors from './pages/Contributors.jsx';
 import { useLanguage } from './context/LanguageContext.jsx';
 import './style.css';
 
@@ -25,6 +26,7 @@ const TITLES = {
     help: '救助资源 · MtX.wiki',
     disclaimer: '医学免责声明 · MtX.wiki',
     contact: '联系 · MtX.wiki',
+    contributors: '贡献者名单 · MtX.wiki',
   },
   en: {
     index: 'Home · MtX.wiki',
@@ -36,6 +38,7 @@ const TITLES = {
     help: 'Help Resources · MtX.wiki',
     disclaimer: 'Medical Disclaimer · MtX.wiki',
     contact: 'Contact · MtX.wiki',
+    contributors: 'Contributors · MtX.wiki',
   },
 };
 
@@ -91,6 +94,8 @@ export default function App() {
         return <Disclaimer />;
       case 'contact':
         return <Contact />;
+      case 'contributors':
+        return <Contributors />;
       default:
         return <Home setCurrentPath={setCurrentPath} />;
     }
