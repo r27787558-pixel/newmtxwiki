@@ -5,25 +5,30 @@ export default function Header({ currentPath, setCurrentPath }) {
 
   const isMedsActive = currentPath === 'meds' || currentPath === 'hrt-overview';
 
+  const navigate = (path) => {
+    setCurrentPath(path);
+    setShowMedsDropdown(false);
+  };
+
   return (
     <header className="header-nav">
       <a
-        href="#index"
+        href="#/index"
         className="top-right-brand"
         onClick={(e) => {
           e.preventDefault();
-          setCurrentPath('index');
+          navigate('index');
         }}
       >
         MtX.wiki
       </a>
       <nav className="nav-links">
         <a
-          href="#index"
+          href="#/index"
           className={currentPath === 'index' ? 'active' : ''}
           onClick={(e) => {
             e.preventDefault();
-            setCurrentPath('index');
+            navigate('index');
           }}
         >
           首页
@@ -35,35 +40,43 @@ export default function Header({ currentPath, setCurrentPath }) {
           onMouseLeave={() => setShowMedsDropdown(false)}
         >
           <a
-            href="#meds"
+            href="#/meds"
             className={isMedsActive ? 'active' : ''}
             onClick={(e) => {
               e.preventDefault();
-              setCurrentPath('meds');
+              navigate('meds');
             }}
           >
-            药物 ▾
+            药物
           </a>
+          <button
+            type="button"
+            className="dropdown-caret"
+            aria-label="展开药物子菜单"
+            aria-haspopup="true"
+            aria-expanded={showMedsDropdown}
+            onClick={() => setShowMedsDropdown((v) => !v)}
+          >
+            ▾
+          </button>
           {showMedsDropdown && (
             <div className="dropdown-menu">
               <a
-                href="#meds"
+                href="#/meds"
                 className={currentPath === 'meds' ? 'sub-active' : ''}
                 onClick={(e) => {
                   e.preventDefault();
-                  setCurrentPath('meds');
-                  setShowMedsDropdown(false);
+                  navigate('meds');
                 }}
               >
                 药物信息
               </a>
               <a
-                href="#hrt-overview"
+                href="#/hrt-overview"
                 className={currentPath === 'hrt-overview' ? 'sub-active' : ''}
                 onClick={(e) => {
                   e.preventDefault();
-                  setCurrentPath('hrt-overview');
-                  setShowMedsDropdown(false);
+                  navigate('hrt-overview');
                 }}
               >
                 HRT指南（综述）
@@ -73,55 +86,55 @@ export default function Header({ currentPath, setCurrentPath }) {
         </div>
 
         <a
-          href="#surgery"
+          href="#/surgery"
           className={currentPath === 'surgery' ? 'active' : ''}
           onClick={(e) => {
             e.preventDefault();
-            setCurrentPath('surgery');
+            navigate('surgery');
           }}
         >
           手术
         </a>
 
         <a
-          href="#survey"
+          href="#/survey"
           className={currentPath === 'survey' ? 'active' : ''}
           onClick={(e) => {
             e.preventDefault();
-            setCurrentPath('survey');
+            navigate('survey');
           }}
         >
           调查
         </a>
 
         <a
-          href="#guide"
+          href="#/guide"
           className={currentPath === 'guide' ? 'active' : ''}
           onClick={(e) => {
             e.preventDefault();
-            setCurrentPath('guide');
+            navigate('guide');
           }}
         >
           生活指南
         </a>
 
         <a
-          href="#help"
+          href="#/help"
           className={currentPath === 'help' ? 'active' : ''}
           onClick={(e) => {
             e.preventDefault();
-            setCurrentPath('help');
+            navigate('help');
           }}
         >
           救助
         </a>
 
         <a
-          href="#disclaimer"
+          href="#/disclaimer"
           className={currentPath === 'disclaimer' ? 'active' : ''}
           onClick={(e) => {
             e.preventDefault();
-            setCurrentPath('disclaimer');
+            navigate('disclaimer');
           }}
         >
           医学声明

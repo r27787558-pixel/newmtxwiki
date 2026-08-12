@@ -1,15 +1,10 @@
 import React from 'react';
+import WikiArticle from '../components/WikiArticle.jsx';
 
 export default function Help() {
   return (
-    <div className="container">
-      <section className="section">
-        <h1 className="big-title">救助资源</h1>
-        <div className="content">
-          <p>紧急救助与求助渠道页面建设中...</p>
-        </div>
-      </section>
-    </div>
+    <WikiArticle title="救助资源">
+      <p>紧急救助与求助渠道页面建设中...</p>
+    </WikiArticle>
   );
 }
-

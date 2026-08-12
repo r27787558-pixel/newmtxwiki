@@ -1,15 +1,10 @@
 import React from 'react';
+import WikiArticle from '../components/WikiArticle.jsx';
 
 export default function Survey() {
   return (
-    <div className="container">
-      <section className="section">
-        <h1 className="big-title">问卷调查</h1>
-        <div className="content">
-          <p>群体调查与数据收集页面建设中...</p>
-        </div>
-      </section>
-    </div>
+    <WikiArticle title="问卷调查">
+      <p>群体调查与数据收集页面建设中...</p>
+    </WikiArticle>
   );
 }
-
