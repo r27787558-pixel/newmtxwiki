@@ -16,7 +16,7 @@ function getContributors(zh) {
     },
     {
       name: 'MCdianhe',
-      role: zh ? '贡献者' : 'Contributor',
+      role: zh ? '重要贡献者' : 'Contributor',
       desc: zh
         ? '参与网站内容建设与推广，是本站的重要贡献者。'
         : 'Contributes to content building and promotion — an important contributor to this site.',
