@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import { LanguageProvider } from './context/LanguageContext.jsx';
-import { ThemeProvider } from './context/ThemeContext.jsx';
+import App from './App';
+import { LanguageProvider } from './context/LanguageContext';
+import { ThemeProvider } from './context/ThemeContext';
 import './style.css';
 
 function applyInitialTheme() {
-  let theme = 'light';
+  let theme: 'light' | 'dark' = 'light';
   try {
     const saved = localStorage.getItem('mtxwiki-theme');
     if (saved === 'light' || saved === 'dark') {
@@ -22,7 +22,10 @@ function applyInitialTheme() {
 
 applyInitialTheme();
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootEl = document.getElementById('root');
+if (!rootEl) throw new Error('Root element not found');
+
+ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
     <ThemeProvider>
       <LanguageProvider>

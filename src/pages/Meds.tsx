@@ -1,11 +1,14 @@
 import React from 'react';
-import { useLanguage } from '../context/LanguageContext.jsx';
-import Estrogens from './meds/Estrogens.jsx';
+import { useLanguage } from '../context/LanguageContext';
+import Estrogens from './meds/Estrogens';
+import type { NavigateFn } from '../types';
+
+type TabItem = { id: string; label: string };
 
 const TAB_IDS = ['monitoring', 'risks', 'estrogens', 'anti-androgens', 'serms'];
 
-const PLACEHOLDERS = (zh) =>
-  (zh
+const PLACEHOLDERS = (zh: boolean): Record<string, string> =>
+  zh
     ? {
         monitoring: '用药期间的抽血监测频率与指标解读（总睾酮、雌二醇、肝功能、肾功能、血脂、血常规）正在整理中。',
         risks: '药物副作用、血栓风险、骨质疏松预防与安全红线内容正在整理中。',
@@ -17,13 +20,13 @@ const PLACEHOLDERS = (zh) =>
         risks: 'Drug side effects, thrombosis risk, osteoporosis prevention, and safety red lines — in progress.',
         'anti-androgens': 'Anti-androgens such as cyproterone acetate (CPA), spironolactone, and bicalutamide — in progress.',
         serms: 'Selective estrogen receptor modulators such as raloxifene — in progress.',
-      });
+      };
 
-export default function Meds({ subTab = 'monitoring', setCurrentPath }) {
+export default function Meds({ subTab = 'monitoring', setCurrentPath }: { subTab?: string; setCurrentPath: NavigateFn }) {
   const { lang, t } = useLanguage();
   const zh = lang === 'zh';
 
-  const tabs = [
+  const tabs: TabItem[] = [
     { id: 'monitoring', label: t.medsMonitoring },
     { id: 'risks', label: t.medsRisks },
     { id: 'estrogens', label: t.medsEstrogens },

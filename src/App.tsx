@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import Header from './components/Header.jsx';
-import Sidebar from './components/Sidebar.jsx';
-import Footer from './components/Footer.jsx';
-import Disclaimer from './pages/Disclaimer.jsx';
-import Home from './pages/Home.jsx';
-import Meds from './pages/Meds.jsx';
-import HrtOverview from './pages/HrtOverview.jsx';
-import Surgery from './pages/Surgery.jsx';
-import Survey from './pages/Survey.jsx';
-import Guide from './pages/Guide.jsx';
-import Help from './pages/Help.jsx';
-import Contact from './pages/Contact.jsx';
-import Contributors from './pages/Contributors.jsx';
-import { useLanguage } from './context/LanguageContext.jsx';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import Footer from './components/Footer';
+import Disclaimer from './pages/Disclaimer';
+import Home from './pages/Home';
+import Meds from './pages/Meds';
+import HrtOverview from './pages/HrtOverview';
+import Surgery from './pages/Surgery';
+import Survey from './pages/Survey';
+import Guide from './pages/Guide';
+import Help from './pages/Help';
+import Contact from './pages/Contact';
+import Contributors from './pages/Contributors';
+import { useLanguage } from './context/LanguageContext';
+import type { Language } from './i18n';
 import './style.css';
 
-const TITLES = {
+const TITLES: Record<Language, Record<string, string>> = {
   zh: {
     index: '首页 · MtX.wiki',
     meds: '药物 · MtX.wiki',
@@ -52,7 +53,7 @@ const TITLES = {
   },
 };
 
-function getPathFromHash() {
+function getPathFromHash(): string {
   if (typeof window === 'undefined') return 'index';
   const hash = window.location.hash.replace(/^#\/?/, '');
   return hash || 'index';
@@ -60,7 +61,7 @@ function getPathFromHash() {
 
 export default function App() {
   const { lang } = useLanguage();
-  const [currentPath, setCurrentPathState] = useState(getPathFromHash);
+  const [currentPath, setCurrentPathState] = useState<string>(getPathFromHash);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -71,7 +72,7 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const setCurrentPath = (path) => {
+  const setCurrentPath = (path: string) => {
     if (getPathFromHash() !== path) {
       window.location.hash = `/${path}`;
     }

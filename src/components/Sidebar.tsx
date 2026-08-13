@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
-import { useLanguage } from '../context/LanguageContext.jsx';
+import { useLanguage } from '../context/LanguageContext';
+import type { NavigateFn, NavLink } from '../types';
 
-function isActive(path, currentPath) {
-  return path === currentPath;
-}
-
-export default function Sidebar({ currentPath, setCurrentPath }) {
+export default function Sidebar({ currentPath, setCurrentPath }: { currentPath: string; setCurrentPath: NavigateFn }) {
   const { t } = useLanguage();
   const [medsOpen, setMedsOpen] = useState(false);
 
   const medsActive = currentPath === 'meds' || currentPath.startsWith('meds/');
   const medsExpanded = medsOpen || medsActive || currentPath === 'hrt-overview';
 
-  const navLinks = [
+  const navLinks: NavLink[] = [
     { path: 'index', label: t.navHome },
     { path: 'surgery', label: t.navSurgery },
   ];
 
-  const medsSubItems = [
+  const medsSubItems: NavLink[] = [
     { path: 'hrt-overview', label: t.medsOverview },
     { path: 'meds/monitoring', label: t.medsMonitoring },
     { path: 'meds/risks', label: t.medsRisks },
@@ -26,7 +23,7 @@ export default function Sidebar({ currentPath, setCurrentPath }) {
     { path: 'meds/serms', label: t.medsSerms },
   ];
 
-  const resourceLinks = [
+  const resourceLinks: NavLink[] = [
     { path: 'survey', label: t.sidebarSurvey },
     { path: 'guide', label: t.navGuide },
     { path: 'help', label: t.navHelp },
@@ -35,10 +32,10 @@ export default function Sidebar({ currentPath, setCurrentPath }) {
     { path: 'contributors', label: t.navContributors },
   ];
 
-  const renderLink = (link) => (
+  const renderLink = (link: NavLink) => (
     <a
       href={`#/${link.path}`}
-      className={isActive(link.path, currentPath) ? 'active' : ''}
+      className={link.path === currentPath ? 'active' : ''}
       onClick={(e) => {
         e.preventDefault();
         setCurrentPath(link.path);

@@ -1,11 +1,19 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { UI } from '../i18n.js';
+import { UI } from '../i18n';
+import type { Language, Translations } from '../i18n';
 
 const STORAGE_KEY = 'mtxwiki-lang';
 
-const LanguageContext = createContext(null);
+export interface LanguageContextType {
+  lang: Language;
+  setLang: (lang: Language) => void;
+  toggleLang: () => void;
+  t: Translations;
+}
 
-function getInitialLang() {
+const LanguageContext = createContext<LanguageContextType | null>(null);
+
+function getInitialLang(): Language {
   if (typeof window === 'undefined') return 'zh';
   try {
     const saved = window.localStorage.getItem(STORAGE_KEY);
@@ -17,8 +25,8 @@ function getInitialLang() {
   return navLang.toLowerCase().startsWith('zh') ? 'zh' : 'en';
 }
 
-export function LanguageProvider({ children }) {
-  const [lang, setLangState] = useState(getInitialLang);
+export function LanguageProvider({ children }: { children: React.ReactNode }) {
+  const [lang, setLangState] = useState<Language>(getInitialLang);
 
   useEffect(() => {
     try {
@@ -29,10 +37,10 @@ export function LanguageProvider({ children }) {
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
   }, [lang]);
 
-  const setLang = (next) => setLangState(next);
+  const setLang = (next: Language) => setLangState(next);
   const toggleLang = () => setLangState((prev) => (prev === 'zh' ? 'en' : 'zh'));
 
-  const value = {
+  const value: LanguageContextType = {
     lang,
     setLang,
     toggleLang,
@@ -42,6 +50,10 @@ export function LanguageProvider({ children }) {
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 
-export function useLanguage() {
-  return useContext(LanguageContext);
+export function useLanguage(): LanguageContextType {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
 }

@@ -1,7 +1,8 @@
 import React from 'react';
-import { useLanguage } from '../context/LanguageContext.jsx';
+import { useLanguage } from '../context/LanguageContext';
+import type { NavigateFn } from '../types';
 
-export default function Footer({ setCurrentPath }) {
+export default function Footer({ setCurrentPath }: { setCurrentPath: NavigateFn }) {
   const { t } = useLanguage();
 
   return (
@@ -22,7 +23,7 @@ export default function Footer({ setCurrentPath }) {
           </a>
         </p>
         <p className="footer-meta">
-          © {new Date().getFullYear()} {t.brand}           ·
+          © {new Date().getFullYear()} {t.brand} ·
           <a
             href="#/contact"
             className="footer-link"

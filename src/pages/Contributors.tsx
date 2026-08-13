@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useLanguage } from '../context/LanguageContext.jsx';
+import { useLanguage } from '../context/LanguageContext';
+import type { Contributor } from '../types';
 
-function getContributors(zh) {
+function getContributors(zh: boolean): Contributor[] {
   return [
     {
       name: 'r27787558-pixel',
@@ -33,10 +34,10 @@ function getContributors(zh) {
 export default function Contributors() {
   const { lang } = useLanguage();
   const zh = lang === 'zh';
-  const [copied, setCopied] = useState(null);
+  const [copied, setCopied] = useState<string | null>(null);
   const contributors = getContributors(zh);
 
-  const copyQQ = (value) => {
+  const copyQQ = (value: string) => {
     try {
       navigator.clipboard.writeText(value);
       setCopied(value);

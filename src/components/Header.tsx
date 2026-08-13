@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-import { useLanguage } from '../context/LanguageContext.jsx';
-import { useTheme } from '../context/ThemeContext.jsx';
+import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
+import type { NavigateFn, NavLink } from '../types';
 
-export default function Header({ currentPath, setCurrentPath }) {
+export default function Header({ currentPath, setCurrentPath }: { currentPath: string; setCurrentPath: NavigateFn }) {
   const { t, toggleLang } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const [showMedsDropdown, setShowMedsDropdown] = useState(false);
 
   const isMedsActive = currentPath === 'meds' || currentPath.startsWith('meds/');
 
-  const navigate = (path) => {
+  const navigate = (path: string) => {
     setCurrentPath(path);
     setShowMedsDropdown(false);
   };
 
-  const links = [
+  const links: NavLink[] = [
     { path: 'surgery', label: t.navSurgery },
     { path: 'survey', label: t.navSurvey },
     { path: 'guide', label: t.navGuide },
@@ -24,7 +25,7 @@ export default function Header({ currentPath, setCurrentPath }) {
     { path: 'contributors', label: t.navContributors },
   ];
 
-  const medsSubItems = [
+  const medsSubItems: NavLink[] = [
     { path: 'meds', label: t.medsInfo },
     { path: 'hrt-overview', label: t.medsOverview },
     { path: 'meds/monitoring', label: t.medsMonitoring },

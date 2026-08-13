@@ -1,12 +1,61 @@
 import React from 'react';
-import { useLanguage } from '../../context/LanguageContext.jsx';
+import { useLanguage } from '../../context/LanguageContext';
+import type { Language } from '../../i18n';
 
-const CONTENT = {
+interface DosageFields {
+  hpg: string;
+  organ: string;
+  sexual: string;
+  suitability: string;
+}
+
+interface DosageItem extends DosageFields {
+  level: string;
+}
+
+interface BioFields {
+  level: string;
+  mechanism: string;
+  performance: string;
+}
+
+interface BioItem extends BioFields {
+  route: string;
+}
+
+interface SafetyFields {
+  level: string;
+  advantages: string;
+  risk: string;
+}
+
+interface SafetyItem extends SafetyFields {
+  route: string;
+}
+
+interface Content {
+  title: string;
+  intro: string;
+  dosageHeading: string;
+  dosageNote: string;
+  dosageFields: DosageFields;
+  dosage: DosageItem[];
+  bioHeading: string;
+  bioRanking: string;
+  bioFields: BioFields;
+  bio: BioItem[];
+  safetyHeading: string;
+  safetyRanking: string;
+  safetyFields: SafetyFields;
+  safety: SafetyItem[];
+}
+
+const CONTENT: Record<Language, Content> = {
   zh: {
     title: '雌激素在 AMAB Enby HRT 中的不同剂量效应与给药途径药理特性分析',
     intro: '本文从剂量效应、生物利用度与安全性三个维度，分析不同雌激素给药方案在 AMAB（指派性别为男性）非二元个体 HRT 中的药理特性。',
     dosageHeading: '不同剂量的效应',
-    dosageNote: '雌激素的剂量直接决定了对下丘脑-垂体-性腺轴（HPG 轴）的负反馈强度，进而影响内源性睾酮水平、靶器官改变以及性功能与体力。',
+    dosageNote: '雌激素的剂量直接决定了对下丘脑-垂体-性腺轴（HPG 轴）的负反馈强度，进而影响内生性睾酮水平、靶器官改变以及性功能与体力。',
     dosageFields: {
       hpg: 'HPG轴与睾酮',
       organ: '靶器官效应',
@@ -16,8 +65,8 @@ const CONTENT = {
     dosage: [
       {
         level: '低剂量',
-        hpg: '负反馈极弱，内源性睾酮维持在较高水平（接近顺性别男性或微幅下降）。',
-        organ: '皮肤油腻度微幅下降，体脂重分布极不明显；乳腺发育速度极慢且程度受限（若未联合 SERM，仍可能出现轻微乳腺芽，但过程漫长）。',
+        hpg: '负反馈极弱，内生性睾酮维持在较高水平（接近顺性别男性或微幅下降）。',
+        organ: '皮肤油腘度微幅下降，体脂重分布极不明显；乳腺发育速度极慢且程度受限（若未联合 SERM，仍可能出现轻微乳腺芽，但过程漫长）。',
         sexual: '基础体力、肌肉量及精力基本不受影响；对自发性勃起、性欲及精子生成的抑制极轻微。',
         suitability: '适合追求极度微弱或渐进改变、希望最大程度保留生理体力与性功能的个体。',
       },
@@ -137,7 +186,7 @@ const CONTENT = {
         route: 'Transdermal (patch or gel)',
         level: 'Relatively low utilization',
         mechanism: 'Drug molecules must cross the stratum corneum barrier of the skin and are then absorbed into the systemic circulation through the subepidermal capillaries.',
-        performance: 'Limited by the skin barrier\u2019s natural permeability, application area, stratum corneum thickness and individual sebum status; immediate absorption per unit dose is the lowest, requiring continuous wearing or daily application to maintain stable blood concentrations.',
+        performance: 'Limited by the skin barrier\'s natural permeability, application area, stratum corneum thickness and individual sebum status; immediate absorption per unit dose is the lowest, requiring continuous wearing or daily application to maintain stable blood concentrations.',
       },
     ],
     safetyHeading: 'Safety Comparison',

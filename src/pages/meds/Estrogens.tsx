@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useLanguage } from '../../context/LanguageContext.jsx';
-import EstrogenOverview from './EstrogenOverview.jsx';
+import { useLanguage } from '../../context/LanguageContext';
+import EstrogenOverview from './EstrogenOverview';
+
+type TabItem = { id: string; label: string };
 
 export default function Estrogens() {
   const { lang, t } = useLanguage();
   const zh = lang === 'zh';
   const [sub, setSub] = useState('overview');
 
-  const items = [
+  const items: TabItem[] = [
     { id: 'overview', label: t.estrogenOverview },
     { id: 'injection', label: t.estrogenInjection },
     { id: 'valerate', label: t.estrogenValerateTablets },
@@ -17,7 +19,7 @@ export default function Estrogens() {
     { id: 'others', label: t.estrogenOthers },
   ];
 
-  const placeholders = {
+  const placeholders: Record<string, string> = {
     injection: zh ? '雌二醇针剂（注射剂）的剂型、剂量与使用说明正在整理中。' : 'Formulations, doses, and usage of estradiol injections — in progress.',
     valerate: zh ? '戊酸雌二醇片的剂量、用法与注意事项正在整理中。' : 'Doses, usage, and cautions for estradiol valerate tablets — in progress.',
     tablets: zh ? '雌二醇片的剂量、用法与注意事项正在整理中。' : 'Doses, usage, and cautions for estradiol tablets — in progress.',

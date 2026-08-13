@@ -1,6 +1,6 @@
 import React from 'react';
-import WikiArticle from '../components/WikiArticle.jsx';
-import { useLanguage } from '../context/LanguageContext.jsx';
+import WikiArticle from '../components/WikiArticle';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function HrtOverview() {
   const { lang } = useLanguage();
@@ -44,7 +44,7 @@ export default function HrtOverview() {
             </li>
             <li>
               <strong>仅追求特定身体改变者：</strong>
-              某些 MtX 可能仅仅希望解决雄性秃发（脱发）或体毛过重的问题，此时方案可能仅涉及
+              某些 MtX 可能仅仅希望解决雄性秀发（脱发）或体毛过重的问题，此时方案可能仅涉及
               <strong>特定酶抑制剂（如非那雄胺/度他雄胺）</strong>，而不需要全套的激素重塑。
             </li>
           </ul>
@@ -59,7 +59,7 @@ export default function HrtOverview() {
 
           <h3>1. 基因决定了你的“上限”与“下限”</h3>
           <p>
-            激素只是启动细胞改变的“钥匙”，但你的基因才是“锁”。HRT 无法改变你的骨骼框架（如骨盆宽度、肩宽、身高）。如果你体内的乳腺受体对雌激素极度敏感，即使你使用了 SERMs 试图阻止乳房发育，依然可能会出现一定程度的乳腺发育。你无法精准控制脂肪只堆积在哪里，这一切由你的基因决定。
+            激素只是启动细胞改变的“钥匙”，但你的基因才是“锁”。HRT 无法改变你的骨骼框架（如骨盆宽度、肩宽、身高）。如果你体内的乳腺受体对雌激素极度敏感，即使你使用了SERMs 试图阻止乳房发育，依然可能会出现一定程度的乳腺发育。你无法精准控制脂肪只堆积在哪里，这一切由你的基因决定。
           </p>
 
           <h3>2. 激素无法对抗物理现实</h3>
@@ -197,7 +197,7 @@ export default function HrtOverview() {
             </li>
           </ul>
           <p>
-            Therefore, every MtX HRT journey is unique and must be dynamically adjusted to the individual’s identity and
+            Therefore, every MtX HRT journey is unique and must be dynamically adjusted to the individual&apos;s identity and
             physical tolerance.
           </p>
 

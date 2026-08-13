@@ -1,8 +1,9 @@
 import React from 'react';
-import { useLanguage } from '../context/LanguageContext.jsx';
+import { useLanguage } from '../context/LanguageContext';
+import type { CardItem, NavigateFn } from '../types';
 
-const CARDS = (zh) =>
-  (zh
+const CARDS = (zh: boolean): CardItem[] =>
+  zh
     ? [
         { path: 'hrt-overview', title: 'HRT 指南', desc: '面向 MtX 群体的激素替代治疗科学综述。', tag: '已上线' },
         { path: 'meds', title: '药物', desc: '雌激素、抗雄激素与 SERMs 等用药分类、监测与风险。', tag: '建设中' },
@@ -20,9 +21,9 @@ const CARDS = (zh) =>
         { path: 'survey', title: 'Survey', desc: 'Community surveys and data collection.', tag: 'WIP' },
         { path: 'help', title: 'Emergency Help', desc: 'Emergency assistance and support channels.', tag: 'WIP' },
         { path: 'contributors', title: 'Contributors', desc: 'Our thanks to every contributor for their support and effort.', tag: 'Thanks' },
-      ]);
+      ];
 
-export default function Home({ setCurrentPath }) {
+export default function Home({ setCurrentPath }: { setCurrentPath: NavigateFn }) {
   const { lang } = useLanguage();
   const zh = lang === 'zh';
   const cards = CARDS(zh);

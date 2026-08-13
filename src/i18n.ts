@@ -1,4 +1,54 @@
-export const UI = {
+import type { Language } from './types';
+
+export type { Language };
+
+export interface Translations {
+  brand: string;
+  tagline: string;
+  navHome: string;
+  navMeds: string;
+  navSurgery: string;
+  navSurvey: string;
+  navGuide: string;
+  navHelp: string;
+  navDisclaimer: string;
+  navContact: string;
+  navContributors: string;
+  sidebarNavGroup: string;
+  sidebarResourceGroup: string;
+  sidebarHrt: string;
+  sidebarSurvey: string;
+  sidebarDisclaimer: string;
+  sidebarContribute: string;
+  medsLabel: string;
+  medsOverview: string;
+  medsInfo: string;
+  medsMonitoring: string;
+  medsRisks: string;
+  medsEstrogens: string;
+  medsAntiAndrogens: string;
+  medsSerms: string;
+  estrogenOverview: string;
+  estrogenInjection: string;
+  estrogenValerateTablets: string;
+  estrogenTablets: string;
+  estrogenGel: string;
+  estrogenPatch: string;
+  estrogenOthers: string;
+  medsLead: string;
+  footerDisclaimer: string;
+  footerDisclaimerText: string;
+  footerReadFull: string;
+  footerEmergency: string;
+  themeToggleToDark: string;
+  themeToggleToLight: string;
+  langSwitchToEn: string;
+  langSwitchToZh: string;
+  tocTitle: string;
+  skipToContent: string;
+}
+
+export const UI: Record<Language, Translations> = {
   zh: {
     brand: 'MtX.wiki',
     tagline: '知识库',

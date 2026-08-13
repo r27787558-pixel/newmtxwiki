@@ -1,6 +1,6 @@
 import React from 'react';
-import WikiArticle from '../components/WikiArticle.jsx';
-import { useLanguage } from '../context/LanguageContext.jsx';
+import WikiArticle from '../components/WikiArticle';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Guide() {
   const { lang } = useLanguage();

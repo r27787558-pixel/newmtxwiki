@@ -1,17 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLanguage } from '../context/LanguageContext.jsx';
+import { useLanguage } from '../context/LanguageContext';
+import type { TocEntry } from '../types';
 
-export default function WikiArticle({ title, lead, children }) {
+export interface WikiArticleProps {
+  title: string;
+  lead?: string;
+  children: React.ReactNode;
+}
+
+export default function WikiArticle({ title, lead, children }: WikiArticleProps) {
   const { t } = useLanguage();
-  const contentRef = useRef(null);
-  const [toc, setToc] = useState([]);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [toc, setToc] = useState<TocEntry[]>([]);
   const [activeId, setActiveId] = useState('');
 
   useEffect(() => {
     const root = contentRef.current;
     if (!root) return;
 
-    const headings = Array.from(root.querySelectorAll('h2, h3'));
+    const headings = Array.from(root.querySelectorAll<HTMLHeadingElement>('h2, h3'));
     headings.forEach((heading, i) => {
       if (!heading.id) heading.id = `section-${i + 1}`;
     });
@@ -23,7 +30,7 @@ export default function WikiArticle({ title, lead, children }) {
       })),
     );
 
-    const visible = new Set();
+    const visible = new Set<string>();
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -38,7 +45,7 @@ export default function WikiArticle({ title, lead, children }) {
     return () => observer.disconnect();
   }, []);
 
-  const scrollTo = (e, id) => {
+  const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
