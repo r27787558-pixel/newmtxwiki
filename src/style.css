@@ -343,6 +343,53 @@ body {
   font-weight: 600;
 }
 
+.sidebar-item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.sidebar-item-row a {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-caret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sidebar-caret:hover {
+  background-color: var(--hover-bg);
+  color: var(--primary-purple-hover);
+}
+
+.sidebar-caret.open {
+  transform: rotate(180deg);
+}
+
+.sidebar-list--nested {
+  margin-left: 0.9rem;
+  padding-left: 0.4rem;
+  border-left: 1px solid var(--border-color);
+}
+
+.sidebar-list--nested a {
+  font-size: 0.84rem;
+  padding: 0.35rem 0.6rem;
+}
+
 .sidebar-footer {
   margin-top: 2rem;
   padding: 0.75rem 0.5rem 0;
@@ -584,6 +631,36 @@ button.active,
 
 .sub-content {
   margin-top: 1.5rem;
+}
+
+.sub-nav-bar--secondary {
+  border-bottom: 1px dashed var(--border-color);
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.sub-nav-bar--secondary .sub-nav-btn {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  border-radius: 6px;
+}
+
+.dosage-block,
+.route-block {
+  margin: 1.25rem 0;
+}
+
+.dosage-block h4,
+.route-block h4 {
+  margin: 0 0 0.5rem;
+  color: var(--heading-color);
+  font-size: 1rem;
+}
+
+.dosage-block table th,
+.route-block table th {
+  width: 11rem;
+  white-space: normal;
 }
 
 /* ===== Tables ===== */

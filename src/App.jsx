@@ -27,6 +27,11 @@ const TITLES = {
     disclaimer: '医学免责声明 · MtX.wiki',
     contact: '联系 · MtX.wiki',
     contributors: '贡献者名单 · MtX.wiki',
+    'meds/monitoring': '用药期间的监测 · MtX.wiki',
+    'meds/risks': '用药风险 · MtX.wiki',
+    'meds/estrogens': '雌激素类药物 · MtX.wiki',
+    'meds/anti-androgens': '抗雄激素类药物 · MtX.wiki',
+    'meds/serms': '选择性雌激素受体调节剂 · MtX.wiki',
   },
   en: {
     index: 'Home · MtX.wiki',
@@ -39,6 +44,11 @@ const TITLES = {
     disclaimer: 'Medical Disclaimer · MtX.wiki',
     contact: 'Contact · MtX.wiki',
     contributors: 'Contributors · MtX.wiki',
+    'meds/monitoring': 'Monitoring · MtX.wiki',
+    'meds/risks': 'Risks · MtX.wiki',
+    'meds/estrogens': 'Estrogens · MtX.wiki',
+    'meds/anti-androgens': 'Anti-androgens · MtX.wiki',
+    'meds/serms': 'SERMs · MtX.wiki',
   },
 };
 
@@ -71,15 +81,17 @@ export default function App() {
 
   useEffect(() => {
     const titles = TITLES[lang] || TITLES.zh;
-    document.title = titles[currentPath] || titles.index;
+    const section = currentPath.split('/')[0];
+    document.title = titles[currentPath] || titles[section] || titles.index;
   }, [currentPath, lang]);
 
   const renderPage = () => {
-    switch (currentPath) {
+    const [section, sub] = currentPath.split('/');
+    switch (section) {
       case 'index':
         return <Home setCurrentPath={setCurrentPath} />;
       case 'meds':
-        return <Meds />;
+        return <Meds subTab={sub || 'monitoring'} setCurrentPath={setCurrentPath} />;
       case 'hrt-overview':
         return <HrtOverview />;
       case 'surgery':

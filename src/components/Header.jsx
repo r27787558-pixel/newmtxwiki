@@ -7,7 +7,7 @@ export default function Header({ currentPath, setCurrentPath }) {
   const { theme, toggleTheme } = useTheme();
   const [showMedsDropdown, setShowMedsDropdown] = useState(false);
 
-  const isMedsActive = currentPath === 'meds' || currentPath === 'hrt-overview';
+  const isMedsActive = currentPath === 'meds' || currentPath.startsWith('meds/');
 
   const navigate = (path) => {
     setCurrentPath(path);
@@ -22,6 +22,16 @@ export default function Header({ currentPath, setCurrentPath }) {
     { path: 'disclaimer', label: t.navDisclaimer },
     { path: 'contact', label: t.navContact },
     { path: 'contributors', label: t.navContributors },
+  ];
+
+  const medsSubItems = [
+    { path: 'meds', label: t.medsInfo },
+    { path: 'hrt-overview', label: t.medsOverview },
+    { path: 'meds/monitoring', label: t.medsMonitoring },
+    { path: 'meds/risks', label: t.medsRisks },
+    { path: 'meds/estrogens', label: t.medsEstrogens },
+    { path: 'meds/anti-androgens', label: t.medsAntiAndrogens },
+    { path: 'meds/serms', label: t.medsSerms },
   ];
 
   return (
@@ -75,26 +85,19 @@ export default function Header({ currentPath, setCurrentPath }) {
           </button>
           {showMedsDropdown && (
             <div className="dropdown-menu">
-              <a
-                href="#/meds"
-                className={currentPath === 'meds' ? 'sub-active' : ''}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate('meds');
-                }}
-              >
-                {t.medsLabel}
-              </a>
-              <a
-                href="#/hrt-overview"
-                className={currentPath === 'hrt-overview' ? 'sub-active' : ''}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate('hrt-overview');
-                }}
-              >
-                {t.medsOverview}
-              </a>
+              {medsSubItems.map((item) => (
+                <a
+                  key={item.path}
+                  href={`#/${item.path}`}
+                  className={currentPath === item.path ? 'sub-active' : ''}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(item.path);
+                  }}
+                >
+                  {item.label}
+                </a>
+              ))}
             </div>
           )}
         </div>
