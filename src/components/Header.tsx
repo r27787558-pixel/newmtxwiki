@@ -10,6 +10,9 @@ export default function Header({ currentPath, setCurrentPath }: { currentPath: s
 
   const isMedsActive = currentPath === 'meds' || currentPath.startsWith('meds/');
 
+  const isSubActive = (itemPath: string) =>
+    currentPath === itemPath || currentPath.startsWith(`${itemPath}/`);
+
   const navigate = (path: string) => {
     setCurrentPath(path);
     setShowMedsDropdown(false);
@@ -33,6 +36,7 @@ export default function Header({ currentPath, setCurrentPath }: { currentPath: s
     { path: 'meds/estrogens', label: t.medsEstrogens },
     { path: 'meds/anti-androgens', label: t.medsAntiAndrogens },
     { path: 'meds/serms', label: t.medsSerms },
+    { path: 'meds/others', label: t.estrogenOthers },
   ];
 
   return (
@@ -90,7 +94,7 @@ export default function Header({ currentPath, setCurrentPath }: { currentPath: s
                 <a
                   key={item.path}
                   href={`#/${item.path}`}
-                  className={currentPath === item.path ? 'sub-active' : ''}
+                  className={isSubActive(item.path) ? 'sub-active' : ''}
                   onClick={(e) => {
                     e.preventDefault();
                     navigate(item.path);

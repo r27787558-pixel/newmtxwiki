@@ -7,6 +7,10 @@ export interface NavLink {
   label: string;
 }
 
+export interface NavTreeNode extends NavLink {
+  children?: NavTreeNode[];
+}
+
 export interface TocEntry {
   id: string;
   text: string;
