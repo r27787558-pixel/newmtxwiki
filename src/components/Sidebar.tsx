@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
 import type { NavigateFn, NavTreeNode } from '../types';
 
 function isNodeActive(node: NavTreeNode, currentPath: string): boolean {
@@ -96,7 +97,8 @@ export default function Sidebar({
   setCurrentPath: NavigateFn;
   sidebarOpen?: boolean;
 }) {
-  const { t } = useLanguage();
+  const { t, toggleLang } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const [openSet, setOpenSet] = useState<Set<string>>(new Set());
 
   const toggleOpen = (path: string) => {
@@ -154,6 +156,20 @@ export default function Sidebar({
           <strong>{t.brand}</strong>
           <small>{t.tagline}</small>
         </div>
+      </div>
+      <div className="sidebar-actions">
+        <button
+          type="button"
+          className="header-icon-btn"
+          aria-label={theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight}
+          title={theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight}
+          onClick={toggleTheme}
+        >
+          {theme === 'light' ? '☾' : '☀'}
+        </button>
+        <button type="button" className="header-icon-btn lang-btn" onClick={toggleLang}>
+          {t.langSwitchToEn}
+        </button>
       </div>
       <nav className="sidebar-nav" aria-label="site">
         <div className="sidebar-group">

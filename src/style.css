@@ -385,6 +385,14 @@ a {
   font-size: 0.75rem;
 }
 
+.sidebar-actions {
+  display: none;
+  gap: 0.5rem;
+  padding: 0 0.5rem 0.85rem;
+  margin-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
 .sidebar-group {
   margin-top: 1.1rem;
 }
@@ -1143,6 +1151,10 @@ hr {
 
   .sidebar.open {
     transform: translateX(0);
+  }
+
+  .sidebar-actions {
+    display: flex;
   }
 
   .sidebar-backdrop {
