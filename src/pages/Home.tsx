@@ -7,19 +7,19 @@ const CARDS = (zh: boolean): CardItem[] =>
     ? [
         { path: 'hrt-overview', title: 'HRT 指南', desc: '面向 MtX 群体的激素替代治疗科学综述。', tag: '已上线' },
         { path: 'meds', title: '药物', desc: '雌激素、抗雄激素与 SERMs 等用药分类、监测与风险。', tag: '建设中' },
-        { path: 'surgery', title: '手术', desc: '性别无效化等手术资讯与经验分享。', tag: '建设中' },
-        { path: 'guide', title: '生活指南', desc: '日常生活与社会支持相关指南。', tag: '建设中' },
-        { path: 'survey', title: '调查问卷', desc: '群体调查与数据收集。', tag: '建设中' },
-        { path: 'help', title: '紧急救助', desc: '紧急救助与求助渠道。', tag: '建设中' },
+        { path: 'surgery', title: '手术', desc: '手术决策清单、面诊提问与术前术后准备。', tag: '基础内容' },
+        { path: 'guide', title: '生活指南', desc: '出柜、社会支持与日常自我照顾。', tag: '基础内容' },
+        { path: 'survey', title: '调查问卷', desc: '群体调查与数据收集。', tag: '基础内容' },
+        { path: 'help', title: '紧急救助', desc: '紧急情况与心理危机的求助渠道。', tag: '基础内容' },
         { path: 'contributors', title: '贡献者', desc: '感谢每一位贡献者的支持与付出。', tag: '感谢' },
       ]
     : [
         { path: 'hrt-overview', title: 'HRT Guide', desc: 'A scientific overview of hormone replacement therapy for the MtX community.', tag: 'Live' },
         { path: 'meds', title: 'Medications', desc: 'Estrogens, anti-androgens, SERMs and more — drug classes, monitoring and risks.', tag: 'WIP' },
-        { path: 'surgery', title: 'Surgery', desc: 'Gender nullification surgery information and experience sharing.', tag: 'WIP' },
-        { path: 'guide', title: 'Life Guide', desc: 'Guides for everyday life and social support.', tag: 'WIP' },
-        { path: 'survey', title: 'Survey', desc: 'Community surveys and data collection.', tag: 'WIP' },
-        { path: 'help', title: 'Emergency Help', desc: 'Emergency assistance and support channels.', tag: 'WIP' },
+        { path: 'surgery', title: 'Surgery', desc: 'Decision checklists, consultation questions, and preparation before and after.', tag: 'Basics' },
+        { path: 'guide', title: 'Life Guide', desc: 'Coming out, social support and everyday self-care.', tag: 'Basics' },
+        { path: 'survey', title: 'Survey', desc: 'Community surveys and data collection.', tag: 'Basics' },
+        { path: 'help', title: 'Emergency Help', desc: 'Where to turn in an emergency or a mental-health crisis.', tag: 'Basics' },
         { path: 'contributors', title: 'Contributors', desc: 'Our thanks to every contributor for their support and effort.', tag: 'Thanks' },
       ];
 

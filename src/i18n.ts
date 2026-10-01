@@ -46,6 +46,16 @@ export interface Translations {
   langSwitchToZh: string;
   tocTitle: string;
   skipToContent: string;
+  menuOpen: string;
+  menuClose: string;
+  backToTop: string;
+  notFoundTitle: string;
+  notFoundDesc: string;
+  notFoundBack: string;
+  wipTitle: string;
+  wipHint: string;
+  wipCta: string;
+  tableHint: string;
 }
 
 export const UI: Record<Language, Translations> = {
@@ -93,6 +103,16 @@ export const UI: Record<Language, Translations> = {
     langSwitchToZh: '中文',
     tocTitle: '目录',
     skipToContent: '跳到正文',
+    menuOpen: '打开导航菜单',
+    menuClose: '关闭导航菜单',
+    backToTop: '回到顶部',
+    notFoundTitle: '页面不存在',
+    notFoundDesc: '你访问的地址可能已被移动或尚未创建。',
+    notFoundBack: '返回首页',
+    wipTitle: '内容建设中',
+    wipHint: '期待你的加入...',
+    wipCta: '参与贡献',
+    tableHint: '表格可左右滑动查看',
   },
   en: {
     brand: 'MtX.wiki',
@@ -138,5 +158,15 @@ export const UI: Record<Language, Translations> = {
     langSwitchToZh: '中文',
     tocTitle: 'Contents',
     skipToContent: 'Skip to content',
+    menuOpen: 'Open navigation menu',
+    menuClose: 'Close navigation menu',
+    backToTop: 'Back to top',
+    notFoundTitle: 'Page not found',
+    notFoundDesc: 'The address you requested may have moved or does not exist yet.',
+    notFoundBack: 'Back to home',
+    wipTitle: 'Content in progress',
+    wipHint: 'Your contribution is welcome...',
+    wipCta: 'Contribute',
+    tableHint: 'Scroll the table sideways to see more',
   },
 };

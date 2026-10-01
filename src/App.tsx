@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Header from './components/Header';
 import MobileTopbar from './components/MobileTopbar';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
 import Disclaimer from './pages/Disclaimer';
 import Home from './pages/Home';
 import Meds from './pages/Meds';
@@ -13,69 +14,36 @@ import Guide from './pages/Guide';
 import Help from './pages/Help';
 import Contact from './pages/Contact';
 import Contributors from './pages/Contributors';
+import NotFound from './pages/NotFound';
 import { useLanguage } from './context/LanguageContext';
-import type { Language } from './i18n';
-import './style.css';
-
-const TITLES: Record<Language, Record<string, string>> = {
-  zh: {
-    index: '首页 · MtX.wiki',
-    meds: '药物 · MtX.wiki',
-    'hrt-overview': 'HRT 指南（综述） · MtX.wiki',
-    surgery: '手术 · MtX.wiki',
-    survey: '调查问卷 · MtX.wiki',
-    guide: '生活指南 · MtX.wiki',
-    help: '救助资源 · MtX.wiki',
-    disclaimer: '医学免责声明 · MtX.wiki',
-    contact: '联系 · MtX.wiki',
-    contributors: '贡献者名单 · MtX.wiki',
-    'meds/monitoring': '用药期间的监测 · MtX.wiki',
-    'meds/risks': '用药风险 · MtX.wiki',
-    'meds/estrogens': '雌激素类药物 · MtX.wiki',
-    'meds/anti-androgens': '抗雄激素类药物 · MtX.wiki',
-    'meds/serms': '选择性雌激素受体调节剂 · MtX.wiki',
-    'meds/others': '其它药物 · MtX.wiki',
-  },
-  en: {
-    index: 'Home · MtX.wiki',
-    meds: 'Medications · MtX.wiki',
-    'hrt-overview': 'HRT Guide (Overview) · MtX.wiki',
-    surgery: 'Surgery · MtX.wiki',
-    survey: 'Survey · MtX.wiki',
-    guide: 'Life Guide · MtX.wiki',
-    help: 'Help Resources · MtX.wiki',
-    disclaimer: 'Medical Disclaimer · MtX.wiki',
-    contact: 'Contact · MtX.wiki',
-    contributors: 'Contributors · MtX.wiki',
-    'meds/monitoring': 'Monitoring · MtX.wiki',
-    'meds/risks': 'Risks · MtX.wiki',
-    'meds/estrogens': 'Estrogens · MtX.wiki',
-    'meds/anti-androgens': 'Anti-androgens · MtX.wiki',
-    'meds/serms': 'SERMs · MtX.wiki',
-    'meds/others': 'Other Medications · MtX.wiki',
-  },
-};
+import { HOME_PATH, isKnownPath, pathFromHash, resolvePageName } from './routes';
 
 function getPathFromHash(): string {
-  if (typeof window === 'undefined') return 'index';
-  const hash = window.location.hash.replace(/^#\/?/, '');
-  return hash || 'index';
+  if (typeof window === 'undefined') return HOME_PATH;
+  return pathFromHash(window.location.hash);
 }
 
-function resolveTitle(titles: Record<string, string>, path: string, fallback: string): string {
-  const segs = path.split('/');
-  while (segs.length > 0) {
-    const key = segs.join('/');
-    if (titles[key]) return titles[key];
-    segs.pop();
-  }
-  return fallback;
+/** 跳过导航：把焦点直接移到正文，且不改变 hash（否则会被路由器当成页面跳转） */
+function focusMainContent() {
+  const main = document.getElementById('main');
+  if (!main) return;
+  main.focus({ preventScroll: true });
+  main.scrollIntoView({ block: 'start' });
 }
 
 export default function App() {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [currentPath, setCurrentPathState] = useState<string>(getPathFromHash);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const setCurrentPath = useCallback((path: string) => {
+    if (getPathFromHash() !== path) {
+      window.location.hash = `/${path}`;
+    }
+    setCurrentPathState(path);
+    setSidebarOpen(false);
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -87,19 +55,26 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const setCurrentPath = (path: string) => {
-    if (getPathFromHash() !== path) {
-      window.location.hash = `/${path}`;
-    }
-    setCurrentPathState(path);
-    setSidebarOpen(false);
-    window.scrollTo(0, 0);
-  };
-
+  // 移动端抽屉：Esc 关闭
   useEffect(() => {
-    const titles = TITLES[lang] || TITLES.zh;
-    document.title = resolveTitle(titles, currentPath, titles.index);
-  }, [currentPath, lang]);
+    if (!sidebarOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSidebarOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [sidebarOpen]);
+
+  // 标题与 meta 描述
+  useEffect(() => {
+    const known = isKnownPath(currentPath);
+    const name = known ? resolvePageName(currentPath, lang) : t.notFoundTitle;
+    document.title = `${name} · ${t.brand}`;
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) {
+      desc.setAttribute('content', `${name} · ${t.brand} —— ${t.tagline}`);
+    }
+  }, [currentPath, lang, t.brand, t.tagline, t.notFoundTitle]);
 
   const renderPage = () => {
     const [section, sub, subSub] = currentPath.split('/');
@@ -108,11 +83,7 @@ export default function App() {
         return <Home setCurrentPath={setCurrentPath} />;
       case 'meds':
         return (
-          <Meds
-            subTab={sub || 'monitoring'}
-            subSubTab={subSub}
-            setCurrentPath={setCurrentPath}
-          />
+          <Meds subTab={sub || 'monitoring'} subSubTab={subSub} setCurrentPath={setCurrentPath} />
         );
       case 'hrt-overview':
         return <HrtOverview />;
@@ -131,12 +102,22 @@ export default function App() {
       case 'contributors':
         return <Contributors />;
       default:
-        return <Home setCurrentPath={setCurrentPath} />;
+        return <NotFound setCurrentPath={setCurrentPath} />;
     }
   };
 
   return (
     <div className="site-wrapper">
+      <a
+        className="skip-link"
+        href="#main"
+        onClick={(e) => {
+          e.preventDefault();
+          focusMainContent();
+        }}
+      >
+        {t.skipToContent}
+      </a>
       <MobileTopbar
         setCurrentPath={setCurrentPath}
         setSidebarOpen={setSidebarOpen}
@@ -148,10 +129,15 @@ export default function App() {
           currentPath={currentPath}
           setCurrentPath={setCurrentPath}
           sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
         />
-        <main className="main-content">{renderPage()}</main>
+        {/* key 触发切换页面时的淡入，并让焦点回到正文起点 */}
+        <main className="main-content" id="main" tabIndex={-1} key={currentPath}>
+          {renderPage()}
+        </main>
       </div>
       <Footer setCurrentPath={setCurrentPath} />
+      <BackToTop />
       <div
         className={`sidebar-backdrop ${sidebarOpen ? 'show' : ''}`}
         onClick={() => setSidebarOpen(false)}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import type { NavigateFn } from '../types';
+import { HOME_PATH } from '../routes';
 
 export default function MobileTopbar({
   setCurrentPath,
@@ -18,18 +19,19 @@ export default function MobileTopbar({
       <button
         type="button"
         className="mobile-menu-btn"
-        aria-label={t.navMeds}
+        aria-label={sidebarOpen ? t.menuClose : t.menuOpen}
         aria-expanded={sidebarOpen}
+        aria-controls="site-sidebar"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         ☰
       </button>
       <a
-        href="#/index"
+        href={`#/${HOME_PATH}`}
         className="top-right-brand"
         onClick={(e) => {
           e.preventDefault();
-          setCurrentPath('index');
+          setCurrentPath(HOME_PATH);
         }}
       >
         {t.brand}

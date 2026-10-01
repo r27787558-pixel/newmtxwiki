@@ -1,63 +1,87 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
-import type { NavigateFn, NavLink } from '../types';
+import type { NavigateFn } from '../types';
+import {
+  HEADER_DROPDOWN_PATH,
+  HEADER_LINKS,
+  HEADER_MEDS_MENU,
+  HOME_PATH,
+  isNodeActive,
+  isPathActive,
+} from '../routes';
 
-export default function Header({ currentPath, setCurrentPath }: { currentPath: string; setCurrentPath: NavigateFn }) {
-  const { t, toggleLang } = useLanguage();
+export default function Header({
+  currentPath,
+  setCurrentPath,
+}: {
+  currentPath: string;
+  setCurrentPath: NavigateFn;
+}) {
+  const { lang, t, toggleLang } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const [showMedsDropdown, setShowMedsDropdown] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
 
-  const isMedsActive = currentPath === 'meds' || currentPath.startsWith('meds/');
+  // 把顶栏实际高度写进 CSS 变量，供 .sidebar 的吸顶偏移使用
+  useEffect(() => {
+    const el = headerRef.current;
+    const root = document.documentElement;
+    const sync = () => root.style.setProperty('--header-h', `${el?.offsetHeight ?? 0}px`);
+    sync();
+    if (!el || typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', sync);
+      return () => {
+        window.removeEventListener('resize', sync);
+        root.style.removeProperty('--header-h');
+      };
+    }
+    const ro = new ResizeObserver(sync);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.style.removeProperty('--header-h');
+    };
+  }, []);
 
-  const isSubActive = (itemPath: string) =>
-    currentPath === itemPath || currentPath.startsWith(`${itemPath}/`);
+  const isMedsActive = isNodeActive(
+    { path: HEADER_DROPDOWN_PATH, labelKey: 'medsLabel' },
+    currentPath,
+  );
+
+  // 路由变化后收起下拉
+  useEffect(() => {
+    setShowMedsDropdown(false);
+  }, [currentPath]);
 
   const navigate = (path: string) => {
     setCurrentPath(path);
     setShowMedsDropdown(false);
   };
 
-  const links: NavLink[] = [
-    { path: 'surgery', label: t.navSurgery },
-    { path: 'survey', label: t.navSurvey },
-    { path: 'guide', label: t.navGuide },
-    { path: 'help', label: t.navHelp },
-    { path: 'disclaimer', label: t.navDisclaimer },
-    { path: 'contact', label: t.navContact },
-    { path: 'contributors', label: t.navContributors },
-  ];
-
-  const medsSubItems: NavLink[] = [
-    { path: 'meds', label: t.medsInfo },
-    { path: 'hrt-overview', label: t.medsOverview },
-    { path: 'meds/monitoring', label: t.medsMonitoring },
-    { path: 'meds/risks', label: t.medsRisks },
-    { path: 'meds/estrogens', label: t.medsEstrogens },
-    { path: 'meds/anti-androgens', label: t.medsAntiAndrogens },
-    { path: 'meds/serms', label: t.medsSerms },
-    { path: 'meds/others', label: t.estrogenOthers },
-  ];
+  const themeLabel = theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight;
+  const langLabel = lang === 'zh' ? t.langSwitchToEn : t.langSwitchToZh;
 
   return (
-    <header className="header-nav">
+    <header className="header-nav" ref={headerRef}>
       <a
-        href="#/index"
+        href={`#/${HOME_PATH}`}
         className="top-right-brand"
         onClick={(e) => {
           e.preventDefault();
-          navigate('index');
+          navigate(HOME_PATH);
         }}
       >
         {t.brand}
       </a>
-      <nav className="nav-links">
+      <nav className="nav-links" aria-label={t.sidebarNavGroup}>
         <a
-          href="#/index"
-          className={currentPath === 'index' ? 'active' : ''}
+          href={`#/${HOME_PATH}`}
+          className={currentPath === HOME_PATH ? 'active' : ''}
+          aria-current={currentPath === HOME_PATH ? 'page' : undefined}
           onClick={(e) => {
             e.preventDefault();
-            navigate('index');
+            navigate(HOME_PATH);
           }}
         >
           {t.navHome}
@@ -67,13 +91,17 @@ export default function Header({ currentPath, setCurrentPath }: { currentPath: s
           className="nav-dropdown-container"
           onMouseEnter={() => setShowMedsDropdown(true)}
           onMouseLeave={() => setShowMedsDropdown(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setShowMedsDropdown(false);
+          }}
         >
           <a
-            href="#/meds"
+            href={`#/${HEADER_DROPDOWN_PATH}`}
             className={isMedsActive ? 'active' : ''}
+            aria-current={isMedsActive ? 'page' : undefined}
             onClick={(e) => {
               e.preventDefault();
-              navigate('meds');
+              navigate(HEADER_DROPDOWN_PATH);
             }}
           >
             {t.medsLabel}
@@ -90,49 +118,66 @@ export default function Header({ currentPath, setCurrentPath }: { currentPath: s
           </button>
           {showMedsDropdown && (
             <div className="dropdown-menu">
-              {medsSubItems.map((item) => (
-                <a
-                  key={item.path}
-                  href={`#/${item.path}`}
-                  className={isSubActive(item.path) ? 'sub-active' : ''}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate(item.path);
-                  }}
-                >
-                  {item.label}
-                </a>
-              ))}
+              {HEADER_MEDS_MENU.map((item) => {
+                const active = item.path === HEADER_DROPDOWN_PATH
+                  ? currentPath === item.path
+                  : isPathActive(item.path, currentPath);
+                return (
+                  <a
+                    key={item.path}
+                    href={`#/${item.path}`}
+                    className={active ? 'sub-active' : ''}
+                    aria-current={active ? 'page' : undefined}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate(item.path);
+                    }}
+                  >
+                    {t[item.labelKey]}
+                  </a>
+                );
+              })}
             </div>
           )}
         </div>
 
-        {links.map((link) => (
-          <a
-            key={link.path}
-            href={`#/${link.path}`}
-            className={currentPath === link.path ? 'active' : ''}
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(link.path);
-            }}
-          >
-            {link.label}
-          </a>
-        ))}
+        {HEADER_LINKS.map((link) => {
+          const active = isPathActive(link.path, currentPath);
+          return (
+            <a
+              key={link.path}
+              href={`#/${link.path}`}
+              className={active ? 'active' : ''}
+              aria-current={active ? 'page' : undefined}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(link.path);
+              }}
+            >
+              {t[link.labelKey]}
+            </a>
+          );
+        })}
 
         <div className="header-actions">
           <button
             type="button"
             className="header-icon-btn"
-            aria-label={theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight}
-            title={theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight}
+            aria-label={themeLabel}
+            title={themeLabel}
             onClick={toggleTheme}
           >
             {theme === 'light' ? '☾' : '☀'}
           </button>
-          <button type="button" className="header-icon-btn lang-btn" onClick={toggleLang}>
-            {t.langSwitchToEn}
+          <button
+            type="button"
+            className="header-icon-btn lang-btn"
+            aria-label={langLabel}
+            title={langLabel}
+            lang={lang === 'zh' ? 'en' : 'zh-CN'}
+            onClick={toggleLang}
+          >
+            {langLabel}
           </button>
         </div>
       </nav>

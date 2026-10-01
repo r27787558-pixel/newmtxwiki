@@ -13,10 +13,13 @@ export default function WikiArticle({ title, lead, children }: WikiArticleProps)
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [toc, setToc] = useState<TocEntry[]>([]);
   const [activeId, setActiveId] = useState('');
+  const [hasTables, setHasTables] = useState(false);
 
   useEffect(() => {
     const root = contentRef.current;
     if (!root) return;
+
+    setHasTables(root.querySelectorAll('table').length > 0);
 
     const headings = Array.from(root.querySelectorAll<HTMLHeadingElement>('h2, h3'));
     headings.forEach((heading, i) => {
@@ -73,6 +76,7 @@ export default function WikiArticle({ title, lead, children }: WikiArticleProps)
           </ul>
         </nav>
       )}
+      {hasTables && <p className="table-hint">{t.tableHint}</p>}
       <div className="wiki-content" ref={contentRef}>
         {children}
       </div>

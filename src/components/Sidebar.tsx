@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
-import type { NavigateFn, NavTreeNode } from '../types';
-
-function isNodeActive(node: NavTreeNode, currentPath: string): boolean {
-  if (node.path === currentPath) return true;
-  if (node.children) {
-    if (currentPath.startsWith(`${node.path}/`)) return true;
-    return node.children.some((child) => isNodeActive(child, currentPath));
-  }
-  return false;
-}
+import type { NavigateFn } from '../types';
+import { NAV_GROUPS, isNodeActive, type NavNode } from '../routes';
 
 function NavList({
   nodes,
@@ -20,37 +12,43 @@ function NavList({
   toggleOpen,
   nested,
 }: {
-  nodes: NavTreeNode[];
+  nodes: NavNode[];
   currentPath: string;
   setCurrentPath: NavigateFn;
   openSet: Set<string>;
   toggleOpen: (path: string) => void;
   nested?: boolean;
 }) {
+  const { t } = useLanguage();
+
   return (
     <ul className={nested ? 'sidebar-list sidebar-list--nested' : 'sidebar-list'}>
       {nodes.map((node) => {
+        const label = t[node.labelKey];
+        const selfActive = node.path === currentPath;
+        const active = isNodeActive(node, currentPath);
+
         if (node.children && node.children.length > 0) {
-          const active = isNodeActive(node, currentPath);
           const open = openSet.has(node.path) || active;
           return (
             <li key={node.path} className="sidebar-item">
               <div className="sidebar-item-row">
                 <a
                   href={`#/${node.path}`}
-                  className={active ? 'active' : ''}
+                  className={selfActive ? 'active' : ''}
+                  aria-current={selfActive ? 'page' : undefined}
                   onClick={(e) => {
                     e.preventDefault();
                     setCurrentPath(node.path);
                   }}
                 >
-                  {node.label}
+                  {label}
                 </a>
                 <button
                   type="button"
                   className={`sidebar-caret ${open ? 'open' : ''}`}
                   aria-expanded={open}
-                  aria-label={node.label}
+                  aria-label={label}
                   onClick={() => toggleOpen(node.path)}
                 >
                   ▾
@@ -69,17 +67,19 @@ function NavList({
             </li>
           );
         }
+
         return (
           <li key={node.path}>
             <a
               href={`#/${node.path}`}
-              className={node.path === currentPath ? 'active' : ''}
+              className={selfActive ? 'active' : ''}
+              aria-current={selfActive ? 'page' : undefined}
               onClick={(e) => {
                 e.preventDefault();
                 setCurrentPath(node.path);
               }}
             >
-              {node.label}
+              {label}
             </a>
           </li>
         );
@@ -92,12 +92,14 @@ export default function Sidebar({
   currentPath,
   setCurrentPath,
   sidebarOpen,
+  setSidebarOpen,
 }: {
   currentPath: string;
   setCurrentPath: NavigateFn;
   sidebarOpen?: boolean;
+  setSidebarOpen?: (open: boolean) => void;
 }) {
-  const { t, toggleLang } = useLanguage();
+  const { t, lang, toggleLang } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const [openSet, setOpenSet] = useState<Set<string>>(new Set());
 
@@ -110,96 +112,74 @@ export default function Sidebar({
     });
   };
 
-  const navNodes: NavTreeNode[] = [
-    { path: 'index', label: t.navHome },
-    {
-      path: 'meds',
-      label: t.medsLabel,
-      children: [
-        { path: 'hrt-overview', label: t.medsOverview },
-        { path: 'meds/monitoring', label: t.medsMonitoring },
-        { path: 'meds/risks', label: t.medsRisks },
-        {
-          path: 'meds/estrogens',
-          label: t.medsEstrogens,
-          children: [
-            { path: 'meds/estrogens/overview', label: t.estrogenOverview },
-            { path: 'meds/estrogens/injection', label: t.estrogenInjection },
-            { path: 'meds/estrogens/valerate', label: t.estrogenValerateTablets },
-            { path: 'meds/estrogens/tablets', label: t.estrogenTablets },
-            { path: 'meds/estrogens/gel', label: t.estrogenGel },
-            { path: 'meds/estrogens/patch', label: t.estrogenPatch },
-          ],
-        },
-        { path: 'meds/anti-androgens', label: t.medsAntiAndrogens },
-        { path: 'meds/serms', label: t.medsSerms },
-        { path: 'meds/others', label: t.estrogenOthers },
-      ],
-    },
-    { path: 'surgery', label: t.navSurgery },
-  ];
-
-  const resourceNodes: NavTreeNode[] = [
-    { path: 'survey', label: t.sidebarSurvey },
-    { path: 'guide', label: t.navGuide },
-    { path: 'help', label: t.navHelp },
-    { path: 'disclaimer', label: t.sidebarDisclaimer },
-    { path: 'contact', label: t.navContact },
-    { path: 'contributors', label: t.navContributors },
-  ];
+  const themeLabel = theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight;
+  const langLabel = lang === 'zh' ? t.langSwitchToEn : t.langSwitchToZh;
 
   return (
-    <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+    <aside
+      id="site-sidebar"
+      className={`sidebar ${sidebarOpen ? 'open' : ''}`}
+      aria-label={t.sidebarNavGroup}
+    >
       <div className="sidebar-logo">
-        <span className="sidebar-logo-mark">M</span>
+        <span className="sidebar-logo-mark" aria-hidden="true">
+          M
+        </span>
         <div className="sidebar-logo-text">
           <strong>{t.brand}</strong>
           <small>{t.tagline}</small>
         </div>
+        {setSidebarOpen && (
+          <button
+            type="button"
+            className="sidebar-close"
+            aria-label={t.menuClose}
+            onClick={() => setSidebarOpen(false)}
+          >
+            ✕
+          </button>
+        )}
       </div>
+
       <div className="sidebar-actions">
         <button
           type="button"
           className="header-icon-btn"
-          aria-label={theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight}
-          title={theme === 'light' ? t.themeToggleToDark : t.themeToggleToLight}
+          aria-label={themeLabel}
+          title={themeLabel}
           onClick={toggleTheme}
         >
           {theme === 'light' ? '☾' : '☀'}
         </button>
-        <button type="button" className="header-icon-btn lang-btn" onClick={toggleLang}>
-          {t.langSwitchToEn}
+        <button
+          type="button"
+          className="header-icon-btn lang-btn"
+          aria-label={langLabel}
+          title={langLabel}
+          lang={lang === 'zh' ? 'en' : 'zh-CN'}
+          onClick={toggleLang}
+        >
+          {langLabel}
         </button>
       </div>
-      <nav className="sidebar-nav" aria-label="site">
-        <div className="sidebar-group">
-          <div className="sidebar-group-title">{t.sidebarNavGroup}</div>
-          <NavList
-            nodes={navNodes}
-            currentPath={currentPath}
-            setCurrentPath={setCurrentPath}
-            openSet={openSet}
-            toggleOpen={toggleOpen}
-          />
-        </div>
 
-        <div className="sidebar-group">
-          <div className="sidebar-group-title">{t.sidebarResourceGroup}</div>
-          <NavList
-            nodes={resourceNodes}
-            currentPath={currentPath}
-            setCurrentPath={setCurrentPath}
-            openSet={openSet}
-            toggleOpen={toggleOpen}
-          />
-        </div>
+      <nav className="sidebar-nav">
+        {NAV_GROUPS.map((group) => (
+          <div className="sidebar-group" key={group.titleKey}>
+            <div className="sidebar-group-title">{t[group.titleKey]}</div>
+            <NavList
+              nodes={group.nodes}
+              currentPath={currentPath}
+              setCurrentPath={setCurrentPath}
+              openSet={openSet}
+              toggleOpen={toggleOpen}
+            />
+          </div>
+        ))}
       </nav>
+
       <div className="sidebar-footer">
-        <a
-          href="https://github.com/r27787558-pixel/newmtxwiki"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="https://github.com/r27787558-pixel/newmtxwiki" target="_blank" rel="noreferrer">
           {t.sidebarContribute}
         </a>
       </div>
