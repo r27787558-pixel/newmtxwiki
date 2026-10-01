@@ -165,14 +165,8 @@ export function resolvePageName(path: string, lang: Language): string {
 }
 
 /**
- * 解析文档标题：从完整路径逐级向上回退，
- * 因此 'meds/estrogens/unknown' 会落到 'meds/estrogens' 的标题。
+ * 判断路径是否命中已知页面（用于 404 兜底）
  */
-export function resolvePageTitle(path: string, lang: Language, brand: string): string {
-  return `${resolvePageName(path, lang)} · ${brand}`;
-}
-
-/** 判断路径是否命中已知页面（用于 404 兜底） */
 export function isKnownPath(path: string): boolean {
   const segs = path.split('/');
   while (segs.length > 0) {

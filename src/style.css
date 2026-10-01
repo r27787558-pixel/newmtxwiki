@@ -1253,7 +1253,12 @@ hr {
   }
 }
 
-.main-content {
+/*
+ * 仅在应用内切换路由时淡入，首屏不加动画。
+ * animation 的 from 是 opacity: 0，若在首次绘制时生效，
+ * 用户会先看到一块空白正文（实测首屏可空白约 0.26s）。
+ */
+.main-content--animated {
   animation: content-in 0.26s ease both;
 }
 

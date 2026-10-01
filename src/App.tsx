@@ -35,12 +35,15 @@ export default function App() {
   const { lang, t } = useLanguage();
   const [currentPath, setCurrentPathState] = useState<string>(getPathFromHash);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  // 首屏不播放淡入动画：见 style.css 中 .main-content--animated 的说明
+  const [hasNavigated, setHasNavigated] = useState(false);
 
   const setCurrentPath = useCallback((path: string) => {
     if (getPathFromHash() !== path) {
       window.location.hash = `/${path}`;
     }
     setCurrentPathState(path);
+    setHasNavigated(true);
     setSidebarOpen(false);
     window.scrollTo(0, 0);
   }, []);
@@ -48,6 +51,7 @@ export default function App() {
   useEffect(() => {
     const onHashChange = () => {
       setCurrentPathState(getPathFromHash());
+      setHasNavigated(true);
       setSidebarOpen(false);
       window.scrollTo(0, 0);
     };
@@ -132,7 +136,12 @@ export default function App() {
           setSidebarOpen={setSidebarOpen}
         />
         {/* key 触发切换页面时的淡入，并让焦点回到正文起点 */}
-        <main className="main-content" id="main" tabIndex={-1} key={currentPath}>
+        <main
+          className={`main-content${hasNavigated ? ' main-content--animated' : ''}`}
+          id="main"
+          tabIndex={-1}
+          key={currentPath}
+        >
           {renderPage()}
         </main>
       </div>
