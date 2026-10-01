@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MtX.wiki 架构图</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 24px 64px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #f5f7fa; color: #1f2733; line-height: 1.5;
+  }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  .sub { color: #6b7684; margin: 0 0 28px; font-size: 14px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  .layer {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 14px 18px 18px;
+    box-shadow: 0 1px 3px rgba(16,24,40,.06);
+  }
+  .layer-title {
+    font-size: 12px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: #7c5cff; margin-bottom: 12px;
+  }
+  .layer-title small { display:block; font-weight:400; letter-spacing:0; text-transform:none; color:#8a94a6; font-size:12px; margin-top:2px; }
+
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .box {
+    flex: 1 1 0; min-width: 140px; border-radius: 9px; padding: 10px 13px;
+    background: #f8faff; border: 1px solid #dfe6f5;
+  }
+  .box b { display: block; font-size: 13.5px; font-weight: 650; }
+  .box span { display: block; font-size: 11.5px; color: #78839a; margin-top: 3px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+  .arrow { text-align: center; color: #b6c0d4; font-size: 18px; line-height: 1.2; margin: 7px 0; }
+  .arrow small { display:block; font-size: 11px; color:#94a0b8; font-family: ui-monospace, Menlo, monospace; }
+
+  .ctx .box { background: #fff7ed; border-color: #fed7aa; }
+  .ctx .box span { color: #b0752e; }
+  .data .box { background: #f0fdf4; border-color: #bbf7d0; }
+  .data .box span { color: #4d8a63; }
+  .comp .box { background: #eef2ff; border-color: #c7d2fe; }
+  .comp .box span { color: #6a72b8; }
+  .page .box { background: #faf5ff; border-color: #e9d5ff; }
+  .page .box span { color: #8b6bb5; }
+  .plat .box { background: #f1f5f9; border-color: #cbd5e1; }
+  .plat .box span { color: #64748b; }
+  .core .box { background: #fdf4ff; border-color: #f0abfc; }
+  .core .box span { color: #9c4fa8; }
+  .new { box-shadow: 0 0 0 2px #fde047 inset; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 720px) { .two { grid-template-columns: 1fr; } }
+
+  .legend { display:flex; flex-wrap:wrap; gap:16px; font-size:12.5px; color:#5b6577; margin: 26px 0 0; }
+  .legend i { display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:6px; vertical-align:-1px; }
+  .tag { font-size:10.5px; font-weight:700; padding:1px 7px; border-radius:20px; background:#eef2ff; color:#5b64c4; margin-left:6px; vertical-align:1px;}
+  .tag.live { background:#e7f8ec; color:#3f8a58; }
+  .tag.new { background:#fef9c3; color:#a16207; }
+  footer.note { margin-top:28px; font-size:12.5px; color:#8a94a6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>MtX.wiki 架构图</h1>
+  <p class="sub">React 18 + Vite 5 + TypeScript · 纯 CSS · Hash 路由 · 无路由/UI/i18n 库 · 静态托管于 GitHub Pages<br />
+     <span class="tag new">黄框</span> 为本次重构新增或重写的模块</p>
+
+  <div class="layer plat">
+    <div class="layer-title">① 构建与运行平台 <small>Build &amp; Runtime Platform</small></div>
+    <div class="row">
+      <div class="box"><b>Vite 5</b><span>vite.config.js · base './'</span></div>
+      <div class="box"><b>TypeScript 5</b><span>tsc --noEmit · 0 error</span></div>
+      <div class="box"><b>ESLint 8</b><span>max-warnings 0 · 0 warning</span></div>
+      <div class="box"><b>GitHub Actions</b><span>push main → build → Pages</span></div>
+      <div class="box"><b>GitHub Pages</b><span>dist/ + public/CNAME</span></div>
+    </div>
+  </div>
+
+  <div class="arrow">▼</div>
+
+  <div class="layer data">
+    <div class="layer-title">② 入口与静态资源 <small>Entry &amp; Static Assets</small></div>
+    <div class="row">
+      <div class="box new"><b>index.html <span class="tag new">增强</span></b><span>SEO + Open Graph + theme-color + noscript</span></div>
+      <div class="box"><b>public/favicon.svg</b><span>站点图标</span></div>
+      <div class="box"><b>public/CNAME</b><span>自定义域名</span></div>
+      <div class="box"><b>ambient-modules.d.ts</b><span>*.css / *.svg 模块声明</span></div>
+    </div>
+  </div>
+
+  <div class="arrow">▼ &nbsp;main.tsx 挂载 &nbsp;<small>applyInitialTheme() 预置 data-theme，避免闪白；style.css 仅在此引入一次</small></div>
+
+  <div class="two">
+    <div class="layer ctx">
+      <div class="layer-title">③ 全局状态与数据源 <small>Context &amp; Data</small></div>
+      <div class="row">
+        <div class="box"><b>ThemeProvider</b><span>light/dark · mtxwiki-theme</span></div>
+        <div class="box"><b>LanguageProvider</b><span>zh/en · t[] · mtxwiki-lang</span></div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <div class="box new"><b>i18n.ts <span class="tag new">扩充</span></b><span>UI.zh / UI.en + Translations</span><span>新增 a11y / 404 / 占位 / 表格提示词条</span></div>
+        <div class="box"><b>types.ts</b><span>Language · Theme · NavigateFn · TocEntry …</span></div>
+      </div>
+    </div>
+
+    <div class="layer core">
+      <div class="layer-title">④ 路由与导航单一数据源 <small>Single Source of Truth</small></div>
+      <div class="box new" style="background:#fdf4ff;border-color:#f0abfc">
+        <b>routes.ts <span class="tag new">新增</span></b>
+        <span>SITE_NAV / RESOURCE_NAV / NAV_GROUPS</span>
+        <span>HEADER_LINKS ← 由 SITE_NAV 派生</span>
+        <span>HEADER_MEDS_MENU ← 由药物节点 flatten 派生</span>
+        <span>isNodeActive() · isPathActive() · PAGE_TITLES · isKnownPath()</span>
+      </div>
+      <div class="arrow" style="margin:8px 0 4px">▼</div>
+      <div class="row">
+        <div class="box"><b>Header</b><span>消费 HEADER_LINKS</span></div>
+        <div class="box"><b>Sidebar</b><span>消费 NAV_GROUPS</span></div>
+        <div class="box"><b>App</b><span>消费 PAGE_TITLES</span></div>
+      </div>
+      <div class="box" style="margin-top:12px;background:#fff;border-color:#e2e8f0">
+        <b>⇒ 消除重复</b>
+        <span>此前 Header 与 Sidebar 各维护一份菜单树，新增页面需改两处；现在只改 routes.ts</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">▼ &nbsp;App.tsx：window.location.hash ⇄ currentPath state &nbsp;<small>hashchange → 前进/后退 · renderPage() 分发 · --header-h 上报</small></div>
+
+  <div class="layer comp">
+    <div class="layer-title">⑤ 外壳与复用组件 <small>App Shell &amp; Shared Components</small></div>
+    <div class="row">
+      <div class="box new"><b>MobileTopbar <span class="tag new">修复</span></b><span>☰ aria-label 修正（原误用 navMeds）</span><span>aria-controls="site-sidebar"</span></div>
+      <div class="box new"><b>Sidebar <span class="tag new">重写</span></b><span>aria-current · ✕ 关闭按钮 · 语言按钮文案修复</span></div>
+      <div class="box new"><b>Header <span class="tag new">重写</span></b><span>数据源化 · ResizeObserver 上报顶栏高度</span></div>
+      <div class="box"><b>Footer</b><span>免责声明 · 快捷链接</span></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="box new"><b>WikiArticle <span class="tag new">增强</span></b><span>TOC + IntersectionObserver 滚动高亮</span><span>自动检测表格 → 移动端滚动提示</span><span>scroll-margin-top 从 1.5rem 调到 4.5rem</span></div>
+      <div class="box new"><b>SubNav <span class="tag new">新增</span></b><span>Meds / Estrogens 共用的 Tab 条</span><span>改为 &lt;a&gt; 支持新标签页 · aria-current</span></div>
+      <div class="box new"><b>Placeholder <span class="tag new">新增</span></b><span>统一「建设中」块：徽标 + 说明 + 贡献入口</span></div>
+      <div class="box new"><b>BackToTop <span class="tag new">新增</span></b><span>滚动 480px 后浮出</span></div>
+    </div>
+  </div>
+
+  <div class="arrow">▼ &nbsp;renderPage() 按 section 分发</div>
+
+  <div class="layer page">
+    <div class="layer-title">⑥ 页面层 <small>Pages</small></div>
+    <div class="row">
+      <div class="box"><b>Home</b><span>/index · 卡片网格</span></div>
+      <div class="box"><b>HrtOverview</b><span>/hrt-overview · 320 行</span></div>
+      <div class="box"><b>Meds</b><span>/meds/:tab · 6 Tab 白名单</span></div>
+      <div class="box"><b>Disclaimer</b><span>医学免责声明</span></div>
+      <div class="box"><b>Contact</b><span>联系方式</span></div>
+      <div class="box"><b>Contributors</b><span>贡献者名单</span></div>
+      <div class="box new"><b>NotFound <span class="tag new">新增</span></b><span>未知 hash 兜底（原先静默回首页）</span></div>
+    </div>
+
+    <div class="arrow">▼ &nbsp;二级嵌套：Meds → Estrogens → EstrogenOverview</div>
+
+    <div class="row">
+      <div class="box new"><b>meds/Estrogens.tsx <span class="tag new">重构</span></b><span>ITEM_IDS 白名单 · 复用 SubNav / Placeholder</span></div>
+      <div class="box"><b>meds/EstrogenOverview.tsx</b><span>300 行 · Content 结构体驱动表格</span></div>
+    </div>
+
+    <div class="arrow">▼ &nbsp;占位页 → 真实内容</div>
+
+    <div class="row">
+      <div class="box new"><b>Surgery <span class="tag new">18→170 行</span></b><span>决策清单 · 面诊提问 · 现实准备</span></div>
+      <div class="box new"><b>Survey <span class="tag new">18→130 行</span></b><span>数据与隐私原则 · 参与方式</span></div>
+      <div class="box new"><b>Guide <span class="tag new">18→140 行</span></b><span>出柜 · 社群 · 自我照顾 · 常见误区</span></div>
+      <div class="box new"><b>Help <span class="tag new">18→170 行</span></b><span>110/120/119 · 12356 · 跨性别专项支持</span></div>
+    </div>
+  </div>
+
+  <div class="arrow">▼</div>
+
+  <div class="layer comp">
+    <div class="layer-title">⑦ 样式与无障碍 <small>Styling &amp; Accessibility</small></div>
+    <div class="row">
+      <div class="box new"><b>style.css <span class="tag new">1210→1550 行</span></b><span>新增：skip-link · back-to-top · placeholder · 404</span><span>响应式表格 display:block + overflow-x</span><span>中屏 1080px 断点 · prefers-reduced-motion</span></div>
+      <div class="box new"><b>无障碍清单 <span class="tag new">新增</span></b><span>跳到正文 · aria-current="page"</span><span>Esc 关闭抽屉 · aria-controls / aria-expanded</span><span>focus-visible · tabIndex=-1 焦点落点</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:#f1f5f9;border:1px solid #cbd5e1"></i>构建/部署平台</span>
+    <span><i style="background:#f0fdf4;border:1px solid #bbf7d0"></i>入口与静态资源</span>
+    <span><i style="background:#fff7ed;border:1px solid #fed7aa"></i>全局状态 / 数据字典</span>
+    <span><i style="background:#fdf4ff;border:1px solid #f0abfc"></i>路由数据源</span>
+    <span><i style="background:#eef2ff;border:1px solid #c7d2fe"></i>外壳与复用组件</span>
+    <span><i style="background:#faf5ff;border:1px solid #e9d5ff"></i>页面层</span>
+  </div>
+
+  <footer class="note">
+    验收：<code>tsc --noEmit</code> 0 错误 · <code>eslint --max-warnings 0</code> 0 警告 · <code>vite build</code> 成功（JS 222 kB / gzip 80 kB，CSS 22.6 kB / gzip 4.9 kB）。<br />
+    URL 契约未变：所有既有 hash 路径保持原样，旧链接不会失效。
+  </footer>
+</div>
+</body>
+</html>
