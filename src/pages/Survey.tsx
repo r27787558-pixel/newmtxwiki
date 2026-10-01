@@ -1,5 +1,6 @@
 import React from 'react';
 import WikiArticle from '../components/WikiArticle';
+import Placeholder from '../components/Placeholder';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Survey() {
@@ -118,20 +119,13 @@ export default function Survey() {
         </p>
       </section>
 
-      <div className="section placeholder">
-        <span className="placeholder-badge">{zh ? '内容建设中' : 'Content in progress'}</span>
-        <p className="placeholder-text">
-          {zh
+      <Placeholder
+        text={
+          zh
             ? '首份问卷正在设计中，结果展示区也尚未上线，欢迎参与共建。'
-            : 'The first survey is being designed and the results section is not live yet. Contributions are welcome.'}
-        </p>
-        <p className="placeholder-hint">
-          {zh ? '期待你的加入... ' : 'Your contribution is welcome... '}
-          <a href="#/contributors" className="placeholder-cta">
-            {zh ? '参与贡献' : 'Contribute'}
-          </a>
-        </p>
-      </div>
+            : 'The first survey is being designed and the results section is not live yet. Contributions are welcome.'
+        }
+      />
     </WikiArticle>
   );
 }

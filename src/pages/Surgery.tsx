@@ -1,5 +1,6 @@
 import React from 'react';
 import WikiArticle from '../components/WikiArticle';
+import Placeholder from '../components/Placeholder';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Surgery() {
@@ -186,20 +187,13 @@ export default function Surgery() {
         </ul>
       </section>
 
-      <div className="section placeholder">
-        <span className="placeholder-badge">{zh ? '内容建设中' : 'Content in progress'}</span>
-        <p className="placeholder-text">
-          {zh
+      <Placeholder
+        text={
+          zh
             ? '性别无效化（gender nullification）等具体方向的经验分享与社群资源正在整理中，欢迎有相关经历的伙伴参与撰写。'
-            : 'Community experience and resource write-ups for specific directions such as gender nullification are being compiled. Contributions from people with lived experience are very welcome.'}
-        </p>
-        <p className="placeholder-hint">
-          {zh ? '期待你的加入... ' : 'Your contribution is welcome... '}
-          <a href="#/contributors" className="placeholder-cta">
-            {zh ? '参与贡献' : 'Contribute'}
-          </a>
-        </p>
-      </div>
+            : 'Community experience and resource write-ups for specific directions such as gender nullification are being compiled. Contributions from people with lived experience are very welcome.'
+        }
+      />
     </WikiArticle>
   );
 }

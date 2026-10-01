@@ -6,7 +6,7 @@ const CARDS = (zh: boolean): CardItem[] =>
   zh
     ? [
         { path: 'hrt-overview', title: 'HRT 指南', desc: '面向 MtX 群体的激素替代治疗科学综述。', tag: '已上线' },
-        { path: 'meds', title: '药物', desc: '雌激素、抗雄激素与 SERMs 等用药分类、监测与风险。', tag: '建设中' },
+        { path: 'meds', title: '药物', desc: '雌激素、抗雄激素与 SERMs 等用药分类、监测与风险。', tag: '基础内容' },
         { path: 'surgery', title: '手术', desc: '手术决策清单、面诊提问与术前术后准备。', tag: '基础内容' },
         { path: 'guide', title: '生活指南', desc: '出柜、社会支持与日常自我照顾。', tag: '基础内容' },
         { path: 'survey', title: '调查问卷', desc: '群体调查与数据收集。', tag: '基础内容' },
@@ -15,7 +15,7 @@ const CARDS = (zh: boolean): CardItem[] =>
       ]
     : [
         { path: 'hrt-overview', title: 'HRT Guide', desc: 'A scientific overview of hormone replacement therapy for the MtX community.', tag: 'Live' },
-        { path: 'meds', title: 'Medications', desc: 'Estrogens, anti-androgens, SERMs and more — drug classes, monitoring and risks.', tag: 'WIP' },
+        { path: 'meds', title: 'Medications', desc: 'Estrogens, anti-androgens, SERMs and more — drug classes, monitoring and risks.', tag: 'Basics' },
         { path: 'surgery', title: 'Surgery', desc: 'Decision checklists, consultation questions, and preparation before and after.', tag: 'Basics' },
         { path: 'guide', title: 'Life Guide', desc: 'Coming out, social support and everyday self-care.', tag: 'Basics' },
         { path: 'survey', title: 'Survey', desc: 'Community surveys and data collection.', tag: 'Basics' },

@@ -1430,6 +1430,79 @@ hr {
   }
 }
 
+/* ----- 药物页通用块（由 MedDocView 渲染） ----- */
+.med-notice {
+  margin: 0 0 1.5rem;
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--info-text);
+  background-color: var(--info-bg);
+  border: 1px solid var(--info-border);
+  border-left: 4px solid var(--primary-purple);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.med-notice a {
+  color: var(--primary-purple);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.med-dose-note {
+  margin: -0.5rem 0 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.med-sources {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed var(--border-color);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.med-sources h3 {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  color: var(--heading-color);
+}
+
+.med-sources ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  line-height: 1.8;
+}
+
+.med-sources li {
+  margin-bottom: 0.25rem;
+}
+
+.med-sources a {
+  color: var(--primary-purple);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  word-break: break-word;
+}
+
+.med-guideline-note {
+  margin: 0.9rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-color);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+@media (max-width: 640px) {
+  .med-notice {
+    padding: 12px 14px;
+    font-size: 0.84rem;
+  }
+}
+
 /* ----- 尊重「减少动态效果」偏好 ----- */
 @media (prefers-reduced-motion: reduce) {
   html {

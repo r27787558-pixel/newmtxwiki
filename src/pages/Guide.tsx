@@ -1,5 +1,6 @@
 import React from 'react';
 import WikiArticle from '../components/WikiArticle';
+import Placeholder from '../components/Placeholder';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Guide() {
@@ -124,20 +125,13 @@ export default function Guide() {
         </ul>
       </section>
 
-      <div className="section placeholder">
-        <span className="placeholder-badge">{zh ? '内容建设中' : 'Content in progress'}</span>
-        <p className="placeholder-text">
-          {zh
+      <Placeholder
+        text={
+          zh
             ? '证件与法律事务、职场与校园、家庭沟通等专题正在整理中，欢迎分享你的经验。'
-            : 'Deep-dives on documents and legal matters, work and campus, and family communication are being compiled. Sharing your experience is welcome.'}
-        </p>
-        <p className="placeholder-hint">
-          {zh ? '期待你的加入... ' : 'Your contribution is welcome... '}
-          <a href="#/contributors" className="placeholder-cta">
-            {zh ? '参与贡献' : 'Contribute'}
-          </a>
-        </p>
-      </div>
+            : 'Deep-dives on documents and legal matters, work and campus, and family communication are being compiled. Sharing your experience is welcome.'
+        }
+      />
     </WikiArticle>
   );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import WikiArticle from '../components/WikiArticle';
+import Placeholder from '../components/Placeholder';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Help() {
@@ -174,20 +175,13 @@ export default function Help() {
         </ul>
       </section>
 
-      <div className="section placeholder">
-        <span className="placeholder-badge">{zh ? '内容建设中' : 'Content in progress'}</span>
-        <p className="placeholder-text">
-          {zh
+      <Placeholder
+        text={
+          zh
             ? '各地友善医疗机构名单、法律援助渠道与社群互助组织正在整理中，欢迎提供你所在地的资源。'
-            : 'Lists of trans-friendly clinics, legal-aid channels and community groups by region are being compiled. Local resources are very welcome.'}
-        </p>
-        <p className="placeholder-hint">
-          {zh ? '期待你的加入... ' : 'Your contribution is welcome... '}
-          <a href="#/contributors" className="placeholder-cta">
-            {zh ? '参与贡献' : 'Contribute'}
-          </a>
-        </p>
-      </div>
+            : 'Lists of trans-friendly clinics, legal-aid channels and community groups by region are being compiled. Local resources are very welcome.'
+        }
+      />
     </WikiArticle>
   );
 }

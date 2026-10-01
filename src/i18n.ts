@@ -56,6 +56,11 @@ export interface Translations {
   wipHint: string;
   wipCta: string;
   tableHint: string;
+  medNotice: string;
+  medNoticeLink: string;
+  medSources: string;
+  medDoseNote: string;
+  medGuidelineNote: string;
 }
 
 export const UI: Record<Language, Translations> = {
@@ -92,7 +97,7 @@ export const UI: Record<Language, Translations> = {
     estrogenGel: '雌二醇凝胶',
     estrogenPatch: '雌二醇贴片',
     estrogenOthers: '其它药物',
-    medsLead: '这里将用于编写和整理适合各个 MtX 群体的 HRT（激素替代治疗）科普指南。',
+    medsLead: '面向 MtX 群体的用药科普：雌激素与抗雄激素药物、SERMs，以及用药期间的监测与风险管理。',
     footerDisclaimer: '医学免责声明：',
     footerDisclaimerText: '本站内容仅供参考，不构成医疗建议。任何用药或治疗决策请务必咨询合格的医生。',
     footerReadFull: '阅读完整声明',
@@ -113,6 +118,14 @@ export const UI: Record<Language, Translations> = {
     wipHint: '期待你的加入...',
     wipCta: '参与贡献',
     tableHint: '表格可左右滑动查看',
+    medNotice:
+      '以下内容为科普与文献汇总，不构成用药建议。剂量范围来自公开指南与药典，个体差异极大，必须由了解你完整病史的医生评估后决定。',
+    medNoticeLink: '阅读《医学免责声明》',
+    medSources: '参考来源',
+    medDoseNote:
+      '本页剂量为成人常见范围，仅作理解用途；起始剂量、调整节奏与停药方式需遵医嘱。',
+    medGuidelineNote:
+      'Endocrine Society 指南第 3 版预计于 2026 年春季发布，UCSF 指南的新版在等待它、已相应推迟。本页引用的是当前最新的已发布版本，但它们即将被取代。',
   },
   en: {
     brand: 'MtX.wiki',
@@ -147,7 +160,7 @@ export const UI: Record<Language, Translations> = {
     estrogenGel: 'Estradiol Gel',
     estrogenPatch: 'Estradiol Patches',
     estrogenOthers: 'Other Medications',
-    medsLead: 'This section will compile HRT (hormone replacement therapy) educational guides tailored to the MtX community.',
+    medsLead: 'Medication guides for the MtX community: estrogens and anti-androgens, SERMs, and monitoring and risk management during treatment.',
     footerDisclaimer: 'Medical disclaimer:',
     footerDisclaimerText: 'Content on this site is for reference only and does not constitute medical advice. Always consult a qualified doctor before making any medication or treatment decisions.',
     footerReadFull: 'Read full disclaimer',
@@ -168,5 +181,13 @@ export const UI: Record<Language, Translations> = {
     wipHint: 'Your contribution is welcome...',
     wipCta: 'Contribute',
     tableHint: 'Scroll the table sideways to see more',
+    medNotice:
+      'The following is educational material compiled from published guidance; it is not a prescription. Dose ranges are drawn from public guidelines and pharmacopoeias, individual variation is large, and any regimen must be decided by a clinician who knows your full history.',
+    medNoticeLink: 'Read the Medical Disclaimer',
+    medSources: 'Sources',
+    medDoseNote:
+      'Doses shown are common adult ranges, provided for understanding only; starting dose, titration and discontinuation must follow medical advice.',
+    medGuidelineNote:
+      'A third edition of the Endocrine Society guideline is expected in spring 2026, and the new UCSF guideline has been deferred to follow it. The versions cited here are the latest currently published, but they will soon be superseded.',
   },
 };
